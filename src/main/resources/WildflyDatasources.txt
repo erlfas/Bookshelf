@@ -1,0 +1,19 @@
+<subsystem xmlns="urn:jboss:domain:datasources:4.0">
+    <datasources>
+        <datasource jndi-name="java:jboss/datasources/bookshelf" pool-name="bookshelf" enabled="true">
+            <connection-url>jdbc:postgresql://localhost:5432/bookshelf</connection-url>
+            <driver-class>org.postgresql.Driver</driver-class>
+            <driver>postgresql</driver>
+            <security>
+                <user-name>jboss</user-name>
+                <password>jboss</password>
+            </security>
+        </datasource>
+        <drivers>
+            <driver name="postgresql" module="org.postgresql"/>
+            <driver name="h2" module="com.h2database.h2">
+                <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+            </driver>
+        </drivers>
+    </datasources>
+</subsystem>
