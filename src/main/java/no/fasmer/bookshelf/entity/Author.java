@@ -1,11 +1,9 @@
 package no.fasmer.bookshelf.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
@@ -22,11 +20,6 @@ public class Author implements Serializable {
     
     @NotNull
     private String lastName;
-    
-    // Book is owner of this many-to-many relationship
-    // Author is the inverse side
-    @ManyToMany(mappedBy = "authors")
-    private Collection<Book> books;
 
     public Long getId() {
         return id;
@@ -50,14 +43,6 @@ public class Author implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Collection<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Collection<Book> books) {
-        this.books = books;
     }
 
 }

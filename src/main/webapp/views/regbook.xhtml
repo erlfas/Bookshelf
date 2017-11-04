@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2>Register a book</h2>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Register a book</h3>
+                </div>
+                <div class="panel-body">
+                    <h:form id="reg" role="form" enctype="multipart/form-data">
+                        
+                        <div class="form-group has-feedback #{!isbn13.valid? 'has-error' : ''}">
+                            <h:outputLabel for="isbn13" value="ISBN-13" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="isbn13" 
+                                             value="#{newBook.isbn13}"
+                                             p:placeholder="Enter ISBN-13 here" 
+                                             class="form-control"
+                                             binding="#{isbn13}"/>
+                                <span class="#{!isbn13.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="isbn13" errorClass="control-label has-error"/>
+                        </div>
+                        
+                        <div class="form-group has-feedback #{!isbn10.valid? 'has-error' : ''}">
+                            <h:outputLabel for="isbn10" value="ISBN-10" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="isbn10" 
+                                             value="#{newBook.isbn10}"
+                                             p:placeholder="Enter ISBN-10 here" 
+                                             class="form-control"
+                                             binding="#{isbn10}"/>
+                                <span class="#{!isbn10.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="isbn10" errorClass="control-label has-error"/>
+                        </div>
+                        
+                        <div class="form-group has-feedback #{!title.valid? 'has-error' : ''}">
+                            <h:outputLabel for="title" value="Title" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="title" 
+                                             value="#{newBook.title}"
+                                             p:placeholder="Enter title here" 
+                                             class="form-control"
+                                             binding="#{title}"/>
+                                <span class="#{!title.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="title" errorClass="control-label has-error"/>
+                        </div>
+                        
+                        <div class="form-group has-feedback #{!published.valid? 'has-error' : ''}">
+                            <h:outputLabel for="published" value="Published" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="published" 
+                                             value="#{newBook.published}"
+                                             p:placeholder="Enter published date here" 
+                                             class="form-control"
+                                             binding="#{published}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <span class="#{!published.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="published" errorClass="control-label has-error"/>
+                        </div>
+                        
+                        <div class="form-group has-feedback #{!publisher.valid? 'has-error' : ''}">
+                            <h:outputLabel for="publisher" value="Publisher" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="publisher" 
+                                             value="#{newBook.publisher}"
+                                             p:placeholder="Enter publisher here" 
+                                             class="form-control"
+                                             binding="#{publisher}"/>
+                                <span class="#{!publisher.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="publisher" errorClass="control-label has-error"/>
+                        </div>
+                        
+                        <div class="form-group has-feedback #{!edition.valid? 'has-error' : ''}">
+                            <h:outputLabel for="edition" value="Edition" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="edition" 
+                                             value="#{newBook.edition}"
+                                             p:placeholder="Enter edition here" 
+                                             class="form-control"
+                                             binding="#{edition}"/>
+                                <span class="#{!edition.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="edition" errorClass="control-label has-error"/>
+                        </div>
+                        
+                        <div class="form-group has-feedback #{!numPages.valid? 'has-error' : ''}">
+                            <h:outputLabel for="numPages" value="Number of pages" styleClass="control-label"/>
+
+                            <div class="input-group  has-feedback">
+                                <h:inputText id="numPages" 
+                                             value="#{newBook.numPages}"
+                                             p:placeholder="Enter number of pages here" 
+                                             class="form-control"
+                                             binding="#{numPages}"/>
+                                <span class="#{!numPages.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            </div>
+                            <h:message for="numPages" errorClass="control-label has-error"/>
+                        </div>
+
+                        <div class="form-group">
+                            <h:commandButton id="Add"
+                                             action="#{bookService.addNewBook}" 
+                                             value="Add"
+                                             styleClass="btn btn-primary"/>
+                        </div>
+                        <h:messages styleClass="messages"
+                                    style="list-style: none; padding:0; margin:0;"
+                                    errorClass="alert alert-error" 
+                                    infoClass="alert alert-success"
+                                    warnClass="alert alert-warning" 
+                                    globalOnly="true"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Books</h2>
+                </div>
+                <div class="panel-body">
+
+                </div>
+                <h:panelGroup rendered="#{empty books}">
+                    <em>No books added</em>
+                </h:panelGroup>
+                <h:dataTable var="book" value="#{books}"
+                             rendered="#{not empty books}"
+                             styleClass="table table-hover table-striped ">
+                    <h:column>
+                        <f:facet name="header">ISBN-13</f:facet>
+                            #{book.isbn13}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">ISBN-10</f:facet>
+                            #{book.isbn10}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                            #{book.title}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Published</f:facet>
+                            #{book.published}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Publisher</f:facet>
+                            #{book.publisher}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Edition</f:facet>
+                            #{book.edition}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"># pages</f:facet>
+                            #{book.numPages}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Authors</f:facet>
+                            #{book.authorSummary}
+                    </h:column>
+                </h:dataTable>
+
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

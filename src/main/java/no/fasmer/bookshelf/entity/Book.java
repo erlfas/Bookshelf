@@ -3,7 +3,9 @@ package no.fasmer.bookshelf.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,16 +19,17 @@ import javax.validation.constraints.Pattern;
 public class Book implements Serializable {
 
     @Id
-    @Pattern(regexp = "^(?:ISBN(?:-13)?:? )?(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$) 97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]$", message = "{invalid.isbn13}")
+    @Pattern(regexp = "^\\d{13}", message = "{invalid.isbn13}")
     private String isbn13;
 
+    @Pattern(regexp = "^\\d{10}", message = "{invalid.isbn10}")
     private String isbn10;
 
     @NotNull
     private String title;
 
     // Book is owner of this many-to-many relationship
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "BOOK_AUTHOR", 
             joinColumns = @JoinColumn(name = "BOOKS_ISBN13"), 
             inverseJoinColumns = @JoinColumn(name = "AUTHORS_ID"))
@@ -120,6 +123,17 @@ public class Book implements Serializable {
 
     public void setNumPages(int numPages) {
         this.numPages = numPages;
+    }
+    
+    public String getAuthorSummary() {
+        if (authors == null || authors.isEmpty()) {
+            return "";
+        }
+        
+        return authors
+                .stream()
+                .map(x -> x.getFirstName() + " " + x.getLastName())
+                .collect(Collectors.joining());
     }
 
 }
