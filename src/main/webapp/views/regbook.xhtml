@@ -17,119 +17,157 @@
                 </div>
                 <div class="panel-body">
                     <h:form id="reg" role="form" enctype="multipart/form-data">
-                        
-                        <div class="form-group has-feedback #{!isbn13.valid? 'has-error' : ''}">
-                            <h:outputLabel for="isbn13" value="ISBN-13" styleClass="control-label"/>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6 has-feedback #{!author1.valid? 'has-error' : ''}">
+                                <h:outputLabel for="author1" value="Author 1" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="isbn13" 
-                                             value="#{newBook.isbn13}"
-                                             p:placeholder="Enter ISBN-13 here" 
-                                             class="form-control"
-                                             binding="#{isbn13}"/>
-                                <span class="#{!isbn13.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="author1" 
+                                                 value="#{newBook.author1}"
+                                                 p:placeholder="Enter first author here" 
+                                                 class="form-control"
+                                                 binding="#{author1}"/>
+                                    <span class="#{!author1.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="author1" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="isbn13" errorClass="control-label has-error"/>
-                        </div>
-                        
-                        <div class="form-group has-feedback #{!isbn10.valid? 'has-error' : ''}">
-                            <h:outputLabel for="isbn10" value="ISBN-10" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="isbn10" 
-                                             value="#{newBook.isbn10}"
-                                             p:placeholder="Enter ISBN-10 here" 
-                                             class="form-control"
-                                             binding="#{isbn10}"/>
-                                <span class="#{!isbn10.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            <div class="form-group col-lg-6 has-feedback #{!author2.valid? 'has-error' : ''}">
+                                <h:outputLabel for="author2" value="Author 2" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="author2" 
+                                                 value="#{newBook.author2}"
+                                                 p:placeholder="Enter second author here" 
+                                                 class="form-control"
+                                                 binding="#{author2}"/>
+                                    <span class="#{!author2.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="author2" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="isbn10" errorClass="control-label has-error"/>
                         </div>
-                        
-                        <div class="form-group has-feedback #{!title.valid? 'has-error' : ''}">
-                            <h:outputLabel for="title" value="Title" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="title" 
-                                             value="#{newBook.title}"
-                                             p:placeholder="Enter title here" 
-                                             class="form-control"
-                                             binding="#{title}"/>
-                                <span class="#{!title.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6 has-feedback #{!isbn13.valid? 'has-error' : ''}">
+                                <h:outputLabel for="isbn13" value="ISBN-13" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="isbn13" 
+                                                 value="#{newBook.isbn13}"
+                                                 p:placeholder="Enter ISBN-13 here" 
+                                                 class="form-control"
+                                                 binding="#{isbn13}"/>
+                                    <span class="#{!isbn13.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="isbn13" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="title" errorClass="control-label has-error"/>
-                        </div>
-                        
-                        <div class="form-group has-feedback #{!published.valid? 'has-error' : ''}">
-                            <h:outputLabel for="published" value="Published" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="published" 
-                                             value="#{newBook.published}"
-                                             p:placeholder="Enter published date here" 
-                                             class="form-control"
-                                             binding="#{published}">
-                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
-                                </h:inputText>
-                                <span class="#{!published.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            <div class="form-group col-lg-6 has-feedback #{!isbn10.valid? 'has-error' : ''}">
+                                <h:outputLabel for="isbn10" value="ISBN-10" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="isbn10" 
+                                                 value="#{newBook.isbn10}"
+                                                 p:placeholder="Enter ISBN-10 here" 
+                                                 class="form-control"
+                                                 binding="#{isbn10}"/>
+                                    <span class="#{!isbn10.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="isbn10" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="published" errorClass="control-label has-error"/>
-                        </div>
-                        
-                        <div class="form-group has-feedback #{!publisher.valid? 'has-error' : ''}">
-                            <h:outputLabel for="publisher" value="Publisher" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="publisher" 
-                                             value="#{newBook.publisher}"
-                                             p:placeholder="Enter publisher here" 
-                                             class="form-control"
-                                             binding="#{publisher}"/>
-                                <span class="#{!publisher.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            <div class="form-group col-lg-6 has-feedback #{!title.valid? 'has-error' : ''}">
+                                <h:outputLabel for="title" value="Title" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="title" 
+                                                 value="#{newBook.title}"
+                                                 p:placeholder="Enter title here" 
+                                                 class="form-control"
+                                                 binding="#{title}"/>
+                                    <span class="#{!title.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="title" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="publisher" errorClass="control-label has-error"/>
                         </div>
-                        
-                        <div class="form-group has-feedback #{!edition.valid? 'has-error' : ''}">
-                            <h:outputLabel for="edition" value="Edition" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="edition" 
-                                             value="#{newBook.edition}"
-                                             p:placeholder="Enter edition here" 
-                                             class="form-control"
-                                             binding="#{edition}"/>
-                                <span class="#{!edition.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6 has-feedback #{!published.valid? 'has-error' : ''}">
+                                <h:outputLabel for="published" value="Published" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="published" 
+                                                 value="#{newBook.published}"
+                                                 p:placeholder="Enter published date here" 
+                                                 class="form-control"
+                                                 binding="#{published}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                    </h:inputText>
+                                    <span class="#{!published.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="published" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="edition" errorClass="control-label has-error"/>
-                        </div>
-                        
-                        <div class="form-group has-feedback #{!numPages.valid? 'has-error' : ''}">
-                            <h:outputLabel for="numPages" value="Number of pages" styleClass="control-label"/>
 
-                            <div class="input-group  has-feedback">
-                                <h:inputText id="numPages" 
-                                             value="#{newBook.numPages}"
-                                             p:placeholder="Enter number of pages here" 
-                                             class="form-control"
-                                             binding="#{numPages}"/>
-                                <span class="#{!numPages.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                            <div class="form-group col-lg-6 has-feedback #{!publisher.valid? 'has-error' : ''}">
+                                <h:outputLabel for="publisher" value="Publisher" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="publisher" 
+                                                 value="#{newBook.publisher}"
+                                                 p:placeholder="Enter publisher here" 
+                                                 class="form-control"
+                                                 binding="#{publisher}"/>
+                                    <span class="#{!publisher.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="publisher" errorClass="control-label has-error"/>
                             </div>
-                            <h:message for="numPages" errorClass="control-label has-error"/>
                         </div>
 
-                        <div class="form-group">
-                            <h:commandButton id="Add"
-                                             action="#{bookService.addNewBook}" 
-                                             value="Add"
-                                             styleClass="btn btn-primary"/>
+                        <div class="form-row">
+                            <div class="form-group col-lg-6 has-feedback #{!edition.valid? 'has-error' : ''}">
+                                <h:outputLabel for="edition" value="Edition" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="edition" 
+                                                 value="#{newBook.edition}"
+                                                 p:placeholder="Enter edition here" 
+                                                 class="form-control"
+                                                 binding="#{edition}"/>
+                                    <span class="#{!edition.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="edition" errorClass="control-label has-error"/>
+                            </div>
+
+                            <div class="form-group col-lg-6 has-feedback #{!numPages.valid? 'has-error' : ''}">
+                                <h:outputLabel for="numPages" value="Number of pages" styleClass="control-label"/>
+
+                                <div class="input-group  has-feedback">
+                                    <h:inputText id="numPages" 
+                                                 value="#{newBook.numPages}"
+                                                 p:placeholder="Enter number of pages here" 
+                                                 class="form-control"
+                                                 binding="#{numPages}"/>
+                                    <span class="#{!numPages.valid ? 'glyphicon glyphicon-remove form-control-feedback' : ''}"/>
+                                </div>
+                                <h:message for="numPages" errorClass="control-label has-error"/>
+                            </div>
                         </div>
-                        <h:messages styleClass="messages"
-                                    style="list-style: none; padding:0; margin:0;"
-                                    errorClass="alert alert-error" 
-                                    infoClass="alert alert-success"
-                                    warnClass="alert alert-warning" 
-                                    globalOnly="true"/>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <h:commandButton id="Add"
+                                                 action="#{bookService.addNewBook}" 
+                                                 value="Add"
+                                                 styleClass="btn btn-primary"/>
+                            </div>
+                            <h:messages styleClass="messages"
+                                        style="list-style: none; padding:0; margin:0;"
+                                        errorClass="alert alert-error" 
+                                        infoClass="alert alert-success"
+                                        warnClass="alert alert-warning" 
+                                        globalOnly="true"/>
+                        </div>
+
                     </h:form>
                 </div>
             </div>

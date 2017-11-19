@@ -1,0 +1,251 @@
+swagger: "2.0"
+info:
+  description: "This is a bookshelf"
+  version: "1.0.0"
+  title: "Bookshelf"
+  termsOfService: "localhost:8080/Bookshelf"
+  contact:
+    email: "ola@nordmann.no"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/Bookshelf"
+tags:
+- name: "book"
+  description: "All your books"
+  externalDocs:
+    description: "Find out more"
+    url: "localhost:8080/Bookshelf"
+schemes:
+- "http"
+paths:
+  /book:
+    post:
+      tags:
+      - "book"
+      summary: "Add a new book to the bookshelf"
+      description: ""
+      operationId: "addBook"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Book object that needs to be added to the bookshelf"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        405:
+          description: "Invalid input"
+      security:
+      - bookshelf_auth:
+        - "write:books"
+        - "read:books"
+  /book/{isbn13}:
+    get:
+      tags:
+      - "book"
+      summary: "Find book by isbn13"
+      description: "Returns a single book"
+      operationId: "getBookByIsbn13"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "isbn13"
+        in: "path"
+        description: "isbn13 of book to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Book"
+        400:
+          description: "Invalid isbn13 supplied"
+        404:
+          description: "Book not found"
+      security:
+      - api_key: []
+    put:
+      tags:
+      - "book"
+      summary: "Update an existing book"
+      description: ""
+      operationId: "updateBook"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Book object that needs to be added to the bookshelf"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Book not found"
+        405:
+          description: "Validation exception"
+      security:
+      - bookshelf_auth:
+        - "write:books"
+        - "read:books"
+    delete:
+      tags:
+      - "book"
+      summary: "Deletes a book"
+      description: ""
+      operationId: "deleteBook"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "isbn13"
+        in: "path"
+        description: "Book isbn13 to delete"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid isbn13 supplied"
+        404:
+          description: "Book not found"
+      security:
+      - bookshelf_auth:
+        - "write:books"
+        - "read:books"
+  /book/{isbn13}/uploadImage:
+    post:
+      tags:
+      - "book"
+      summary: "uploads an image"
+      description: ""
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "isbn13"
+        in: "path"
+        description: "isbn13 of book to update"
+        required: true
+        type: "string"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - bookshelf_auth:
+        - "write:books"
+        - "read:books"
+securityDefinitions:
+  bookshelf_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:books: "modify books in your account"
+      read:books: "read your books"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Book:
+    type: "object"
+    properties:
+      isbn13:
+        type: "string"
+      isbn10:
+        type: "string"
+      title:
+        type: "string"
+      published:
+        type: "string"
+        format: "date"
+      publisher:
+        type: "string"
+      edition:
+        type: "integer"
+        format: "int64"
+      numPages:
+        type: "integer"
+        format: "int64"
+      tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tag"
+        xml:
+          name: "tag"
+      authors:
+        type: "array"
+        items:
+          $ref: "#/definitions/Author"
+        xml:
+          name: "author"
+    xml:
+      name: "Book"
+  Tag:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Author:
+    type: "object"
+    required:
+    - "firstName"
+    - "lastName"
+    properties:
+      firstName:
+        type: "string"
+        example: "John"
+      lastName:
+        type: "string"
+        example: "Smith"
+    xml:
+      name: "Author"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
