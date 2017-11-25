@@ -20,7 +20,7 @@ public class BookApiImpl implements BookApi {
 
     @Override
     public Response addBook(String apiKey, Book book, SecurityContext securityContext) {
-        if (!apiKeyBean.isValidAndNotExpired(apiKey)) {
+        if (!apiKeyBean.isValidAdmin(apiKey)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
@@ -30,22 +30,34 @@ public class BookApiImpl implements BookApi {
 
     @Override
     public Response deleteBook(String apiKey, String isbn13, SecurityContext securityContext) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!apiKeyBean.isValidAdmin(apiKey)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @Override
     public Response getBookByIsbn13(String isbn13, SecurityContext securityContext) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @Override
     public Response updateBook(String apiKey, Book body, SecurityContext securityContext) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!apiKeyBean.isValidAdmin(apiKey)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @Override
     public Response uploadFile(MultipartFormDataInput input, String apiKey, String isbn13, SecurityContext securityContext) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!apiKeyBean.isValidAdmin(apiKey)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
     
 }
