@@ -220,6 +220,7 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "Biography"
     xml:
       name: "Tag"
   Author:
