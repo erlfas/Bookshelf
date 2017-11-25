@@ -34,6 +34,10 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
+      - name: X-API-KEY
+        in: header
+        required: true
+        type: string
       - in: "body"
         name: "body"
         description: "Book object that needs to be added to the bookshelf"
@@ -44,8 +48,7 @@ paths:
         405:
           description: "Invalid input"
       security:
-      - OauthSecurity:
-        - "user"
+        - UserSecurity: []
   /book/{isbn13}:
     get:
       tags:
@@ -72,8 +75,7 @@ paths:
         404:
           description: "Book not found"
       security:
-      - OauthSecurity:
-        - "user"
+        - UserSecurity: []
     put:
       tags:
       - "book"
@@ -87,6 +89,10 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
+      - name: X-API-KEY
+        in: header
+        required: true
+        type: string
       - in: "body"
         name: "body"
         description: "Book object that needs to be added to the bookshelf"
@@ -101,8 +107,7 @@ paths:
         405:
           description: "Validation exception"
       security:
-      - OauthSecurity:
-        - "admin"
+        - AdminSecurity: []
     delete:
       tags:
       - "book"
@@ -113,10 +118,10 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
+      - name: X-API-KEY
+        in: header
+        required: true
+        type: string
       - name: "isbn13"
         in: "path"
         description: "Book isbn13 to delete"
@@ -128,8 +133,7 @@ paths:
         404:
           description: "Book not found"
       security:
-      - OauthSecurity:
-        - "admin"
+        - AdminSecurity: []
   /book/{isbn13}/uploadImage:
     post:
       tags:
@@ -142,6 +146,10 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: X-API-KEY
+        in: header
+        required: true
+        type: string
       - name: "isbn13"
         in: "path"
         description: "isbn13 of book to update"
@@ -163,20 +171,19 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
       security:
-      - OauthSecurity:
-        - "admin"
+        - AdminSecurity: []
 securityDefinitions:
-  OauthSecurity:
-    type: "oauth2"
-    flow: "accessCode"
-    authorizationUrl: 'https://oauth.simple.api/authorization'
-    tokenUrl: 'https://oauth.simple.api/token'
-    scopes:
-      admin: "Admin scope"
-      user: "User scope"
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: SIMPLE-API-KEY
+  AdminSecurity:
+    type: apiKey
+    in: header
+    name: ADMIN-API-KEY
 security:
-  - OauthSecurity:
-    - user
+  - UserSecurity: [] 
+  - AdminSecurity: []
 definitions:
   Book:
     type: "object"
