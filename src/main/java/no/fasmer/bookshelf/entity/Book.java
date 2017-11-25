@@ -48,10 +48,10 @@ public class Book implements Serializable {
     @NotNull
     private String publisher;
 
-    private int edition;
+    private Integer edition;
 
     @NotNull
-    private int numPages;
+    private Integer numPages;
     
     private transient String author1;
     private transient String author2;
@@ -113,19 +113,19 @@ public class Book implements Serializable {
         this.publisher = publisher;
     }
 
-    public int getEdition() {
+    public Integer getEdition() {
         return edition;
     }
 
-    public void setEdition(int edition) {
+    public void setEdition(Integer edition) {
         this.edition = edition;
     }
 
-    public int getNumPages() {
+    public Integer getNumPages() {
         return numPages;
     }
 
-    public void setNumPages(int numPages) {
+    public void setNumPages(Integer numPages) {
         this.numPages = numPages;
     }
     

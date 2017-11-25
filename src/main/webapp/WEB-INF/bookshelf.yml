@@ -44,9 +44,8 @@ paths:
         405:
           description: "Invalid input"
       security:
-      - bookshelf_auth:
-        - "write:books"
-        - "read:books"
+      - OauthSecurity:
+        - "user"
   /book/{isbn13}:
     get:
       tags:
@@ -73,7 +72,8 @@ paths:
         404:
           description: "Book not found"
       security:
-      - api_key: []
+      - OauthSecurity:
+        - "user"
     put:
       tags:
       - "book"
@@ -101,9 +101,8 @@ paths:
         405:
           description: "Validation exception"
       security:
-      - bookshelf_auth:
-        - "write:books"
-        - "read:books"
+      - OauthSecurity:
+        - "admin"
     delete:
       tags:
       - "book"
@@ -129,9 +128,8 @@ paths:
         404:
           description: "Book not found"
       security:
-      - bookshelf_auth:
-        - "write:books"
-        - "read:books"
+      - OauthSecurity:
+        - "admin"
   /book/{isbn13}/uploadImage:
     post:
       tags:
@@ -165,21 +163,20 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
       security:
-      - bookshelf_auth:
-        - "write:books"
-        - "read:books"
+      - OauthSecurity:
+        - "admin"
 securityDefinitions:
-  bookshelf_auth:
+  OauthSecurity:
     type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
+    flow: "accessCode"
+    authorizationUrl: 'https://oauth.simple.api/authorization'
+    tokenUrl: 'https://oauth.simple.api/token'
     scopes:
-      write:books: "modify books in your account"
-      read:books: "read your books"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+      admin: "Admin scope"
+      user: "User scope"
+security:
+  - OauthSecurity:
+    - user
 definitions:
   Book:
     type: "object"
@@ -197,10 +194,10 @@ definitions:
         type: "string"
       edition:
         type: "integer"
-        format: "int64"
+        format: "int32"
       numPages:
         type: "integer"
-        format: "int64"
+        format: "int32"
       tags:
         type: "array"
         items:
