@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +30,9 @@ public class ApiKey implements Serializable {
     @GeneratedValue(generator = "ApiKey_Gen")
     private Long id;
     
+    @OneToOne
+    private BookshelfUser bookshelfUser;
+    
     @NotNull
     @Column(unique = true)
     private String apiKey;
@@ -46,6 +50,14 @@ public class ApiKey implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public BookshelfUser getBookshelfUser() {
+        return bookshelfUser;
+    }
+
+    public void setBookshelfUser(BookshelfUser bookshelfUser) {
+        this.bookshelfUser = bookshelfUser;
     }
 
     public String getApiKey() {
