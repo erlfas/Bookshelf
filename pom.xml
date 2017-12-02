@@ -13,7 +13,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <resteasy-version>3.0.19.Final</resteasy-version>
+        <resteasy-version>3.1.4.Final</resteasy-version>
         <swagger-version>1.5.16</swagger-version>
     </properties>
     
