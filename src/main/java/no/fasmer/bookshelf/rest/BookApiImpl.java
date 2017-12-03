@@ -36,7 +36,6 @@ public class BookApiImpl implements BookApi {
         }
         
         final BookServiceStatus bookServiceStatus = bookBean.deleteBook(isbn13);
-        
         return Response.status(bookServiceStatus.getStatus()).build();
     }
 
