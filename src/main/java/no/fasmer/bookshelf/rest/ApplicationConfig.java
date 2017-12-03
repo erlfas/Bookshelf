@@ -10,6 +10,9 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
+        resources.add(no.fasmer.bookshelf.rest.BookApiImpl.class);
+        resources.add(no.fasmer.bookshelf.rest.BookshelfApiImpl.class);
+        resources.add(no.fasmer.bookshelf.rest.UserApiImpl.class);
         return resources;
     }
 
