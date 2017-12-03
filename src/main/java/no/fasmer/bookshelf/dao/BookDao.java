@@ -15,4 +15,10 @@ public class BookDao extends AbstractDao<Book> {
         super(Book.class);
     }
     
+    public Book findByIsbn13(final String isbn13) {
+        return (Book) em.createNamedQuery("findByIsbn13")
+                .setParameter("isbn13", isbn13)
+                .getSingleResult();
+    }
+    
 }

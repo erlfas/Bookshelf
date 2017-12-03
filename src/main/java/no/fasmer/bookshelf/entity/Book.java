@@ -10,12 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
+@NamedQueries(value = {
+    @NamedQuery(
+            name = "findByIsbn13",
+            query = "SELECT b FROM Book b WHERE b.isbn13 = :isbn13"
+    )
+})
 public class Book implements Serializable {
 
     @Id
