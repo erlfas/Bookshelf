@@ -15,4 +15,16 @@ public class BookshelfDao extends AbstractDao<Bookshelf> {
         super(Bookshelf.class);
     }
     
+    public boolean userHasBookshelf(Long userId, String title) {
+        final Bookshelf bookshelf = getBookshelf(userId, title);
+        return bookshelf != null;
+    }
+    
+    public Bookshelf getBookshelf(Long userId, String title) {
+        return (Bookshelf) em.createNamedQuery("getBookshelf")
+                .setParameter("userId", userId)
+                .setParameter("title", title)
+                .getSingleResult();
+    }
+    
 }

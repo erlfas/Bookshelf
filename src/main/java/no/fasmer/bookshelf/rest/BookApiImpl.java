@@ -1,6 +1,6 @@
 package no.fasmer.bookshelf.rest;
 
-import no.fasmer.bookshelf.enums.BookServiceStatus;
+import no.fasmer.bookshelf.rest.enums.RestStatus;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
@@ -9,6 +9,7 @@ import no.fasmer.bookshelf.ejb.ApiKeyBean;
 import no.fasmer.bookshelf.ejb.BookBean;
 import no.fasmer.bookshelf.mapper.Mapper;
 import no.fasmer.bookshelf.model.Book;
+import no.fasmer.bookshelf.rest.vo.BookResponse;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 public class BookApiImpl implements BookApi {
@@ -25,8 +26,19 @@ public class BookApiImpl implements BookApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final BookServiceStatus bookServiceStatus = bookBean.addBook(book);
-        return Response.status(bookServiceStatus.getStatus()).build();
+        final BookResponse bookResponse = bookBean.addBook(Mapper.map(book));
+        
+        switch (bookResponse.getBookServiceStatus()) {
+            case CREATED:
+                return Response
+                .status(bookResponse.getBookServiceStatus().getCode())
+                .header("Location", "/book/" + book.getIsbn13())
+                .build();
+            default:
+                return Response
+                        .status(bookResponse.getBookServiceStatus().getCode())
+                        .build();
+        }
     }
 
     @Override
@@ -35,8 +47,9 @@ public class BookApiImpl implements BookApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final BookServiceStatus bookServiceStatus = bookBean.deleteBook(isbn13);
-        return Response.status(bookServiceStatus.getStatus()).build();
+        final RestStatus restStatus = bookBean.deleteBook(isbn13);
+        
+        return Response.status(restStatus.getCode()).build();
     }
 
     @Override
@@ -50,12 +63,14 @@ public class BookApiImpl implements BookApi {
     }
 
     @Override
-    public Response updateBook(String apiKey, Book body, SecurityContext securityContext) {
+    public Response updateBook(String apiKey, Book book, SecurityContext securityContext) {
         if (!apiKeyBean.isValid(apiKey)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+        final RestStatus restStatus = bookBean.updateBook(Mapper.map(book));
+        
+        return Response.status(restStatus.getCode()).build();
     }
 
     @Override

@@ -148,9 +148,10 @@ paths:
         in: header
         required: true
         type: string
-      - in: "path"
-        name: "bookshelfId"
-        type: "string"
+      - in: path
+        name: bookshelfId
+        type: integer
+        format: int64
         description: "The id of the bookshelf"
         required: true
       responses:
@@ -182,7 +183,8 @@ paths:
         type: string
       - in: "query"
         name: "userId"
-        type: "string"
+        type: integer
+        format: int64
         description: "The id of the user"
         required: true
       - in: "query"
@@ -191,15 +193,13 @@ paths:
         description: "Bookshelf to be registered"
         required: true
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/BookshelfResponse"
+        201:
+          description: "created bookshelf"
         404:
           description: "Invalid bookshelfUserId"
       security:
         - UserSecurity: []
-  /bookshelf/book/{isbn13}:
+  /bookshelf/{bookshelfId}/book/{isbn13}:
     post:
       tags:
       - "bookshelf"
@@ -217,11 +217,17 @@ paths:
         in: header
         required: true
         type: string
-      - name: "isbn13"
-        in: "path"
-        description: "isbn13 of book to add to bookshelf"
+      - name: bookshelfId
+        in: path
+        description: id of bookshelf
         required: true
-        type: "string"
+        type: integer
+        format: int64
+      - name: isbn13
+        in: path
+        description: isbn13 of book to add to bookshelf
+        required: true
+        type: string
       responses:
         200:
           description: "successful operation"
@@ -254,6 +260,8 @@ paths:
         schema:
           $ref: "#/definitions/Book"
       responses:
+        201:
+          description: "Created"
         405:
           description: "Invalid input"
       security:
@@ -309,6 +317,8 @@ paths:
         schema:
           $ref: "#/definitions/Book"
       responses:
+        200:
+            description: "Updated book"
         400:
           description: "Invalid ID supplied"
         404:
@@ -337,6 +347,8 @@ paths:
         required: true
         type: "string"
       responses:
+        200:
+            description: "Deleted book"
         400:
           description: "Invalid isbn13 supplied"
         404:

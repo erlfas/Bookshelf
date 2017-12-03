@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -29,6 +30,7 @@ public class ApiKey implements Serializable {
     private Long id;
     
     @OneToOne
+    @JoinColumn(name = "bookshelfUser_id")
     private BookshelfUser bookshelfUser;
     
     @NotNull

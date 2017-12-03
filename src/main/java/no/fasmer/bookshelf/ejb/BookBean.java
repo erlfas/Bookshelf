@@ -7,7 +7,8 @@ import javax.inject.Inject;
 import no.fasmer.bookshelf.dao.BookDao;
 import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.mapper.Mapper;
-import no.fasmer.bookshelf.enums.BookServiceStatus;
+import no.fasmer.bookshelf.rest.enums.RestStatus;
+import no.fasmer.bookshelf.rest.vo.BookResponse;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless
@@ -27,36 +28,55 @@ public class BookBean {
         return bookDao.findByIsbn13(isbn13);
     }
 
-    public BookServiceStatus addBook(no.fasmer.bookshelf.model.Book book) {
+    public BookResponse addBook(no.fasmer.bookshelf.entity.Book jpaBook) {
         try {
-            final no.fasmer.bookshelf.entity.Book jpaBook = Mapper.map(book);
             bookDao.persist(jpaBook);
 
-            return BookServiceStatus.OK;
+            return new BookResponse(RestStatus.CREATED, jpaBook);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Book not persisted.", e);
-            return BookServiceStatus.INTERNAL_ERROR;
+            return new BookResponse(RestStatus.INTERNAL_ERROR, null);
         }
     }
 
-    public BookServiceStatus deleteBook(final String isbn13) {
+    public RestStatus deleteBook(final String isbn13) {
         if (StringUtils.isBlank(isbn13)) {
-            return BookServiceStatus.INVALID_INPUT;
+            return RestStatus.INVALID_INPUT;
         }
 
         final no.fasmer.bookshelf.entity.Book book = bookDao.findByIsbn13(isbn13);
 
         if (book == null) {
-            return BookServiceStatus.NOT_FOUND;
+            return RestStatus.NOT_FOUND;
         }
 
         try {
             bookDao.remove(book);
-            return BookServiceStatus.OK;
+            return RestStatus.OK;
         } catch (Exception e) {
-            return BookServiceStatus.INTERNAL_ERROR;
+            return RestStatus.INTERNAL_ERROR;
         }
-
+    }
+    
+    public RestStatus updateBook(no.fasmer.bookshelf.entity.Book updatedBook) {
+        if (updatedBook == null) {
+            return RestStatus.INVALID_INPUT;
+        }
+        
+        final no.fasmer.bookshelf.entity.Book existing = bookDao.findByIsbn13(updatedBook.getIsbn13());
+        
+        if (existing == null) {
+            return RestStatus.NOT_FOUND;
+        }
+        
+        existing.setEdition(updatedBook.getEdition());
+        existing.setNumPages(updatedBook.getNumPages());
+        existing.setPublished(updatedBook.getPublished());
+        existing.setPublisher(updatedBook.getPublisher());
+        existing.setTags(updatedBook.getTags());
+        existing.setTitle(updatedBook.getTitle());
+        
+        return RestStatus.OK;
     }
 
 }

@@ -5,8 +5,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Mapper {
+    
+    public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf) {
+        final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
+        swaggerBookshelf.setBooksIds(jpaBookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()));
+        swaggerBookshelf.setBookshelfUserId(jpaBookshelf.getBookshelfUser().getId());
+        swaggerBookshelf.setTitle(jpaBookshelf.getTitle());
+        
+        return swaggerBookshelf;
+    }
     
     public static List<no.fasmer.bookshelf.model.Tag> mapTags(Collection<no.fasmer.bookshelf.entity.Tag> jpaTags) {
         final List<no.fasmer.bookshelf.model.Tag> swaggerTags = new ArrayList<>();
