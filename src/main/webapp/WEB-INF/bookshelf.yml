@@ -14,12 +14,221 @@ basePath: "/Bookshelf"
 tags:
 - name: "book"
   description: "All your books"
-  externalDocs:
-    description: "Find out more"
-    url: "localhost:8080/Bookshelf"
+- name: "bookshelf"
+- name: "user"
 schemes:
 - "http"
 paths:
+  /user/{userId}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user"
+      description: "Get user"
+      operationId: "getUser"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - name: "userId"
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "Invalid user id"
+      security:
+        - UserSecurity: []
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Register a new user"
+      description: "Register a new user"
+      operationId: "addUser"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "User object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        201:
+          description: "successful operation"
+        400:
+          description: "Invalid input"
+      security:
+        - UserSecurity: []
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+        400:
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ""
+      operationId: logoutUser
+      produces:
+        - application/xml
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /bookshelf/{bookshelfId}:
+    get:
+      tags:
+      - "bookshelf"
+      summary: "Get a bookshelf"
+      description: "Get a bookshelf"
+      operationId: "getBookshelf"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - in: "path"
+        name: "bookshelfId"
+        type: "string"
+        description: "The id of the bookshelf"
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Bookshelf"
+        404:
+          description: "Invalid bookshelfId"
+      security:
+        - UserSecurity: []
+  /bookshelf:
+    post:
+      tags:
+      - "bookshelf"
+      summary: "Register a new bookshelf"
+      description: "Register a new bookshelf"
+      operationId: "addBookshelf"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - in: "query"
+        name: "userId"
+        type: "string"
+        description: "The id of the user"
+        required: true
+      - in: "query"
+        name: "title"
+        type: "string"
+        description: "Bookshelf to be registered"
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BookshelfResponse"
+        404:
+          description: "Invalid bookshelfUserId"
+      security:
+        - UserSecurity: []
+  /bookshelf/book/{isbn13}:
+    post:
+      tags:
+      - "bookshelf"
+      summary: "Add a book to a bookshelf"
+      description: "Add a book to a bookshelf"
+      operationId: "addBookToBookshelf"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - name: "isbn13"
+        in: "path"
+        description: "isbn13 of book to add to bookshelf"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid isbn13"
+      security:
+        - UserSecurity: []
   /book:
     post:
       tags:
@@ -34,7 +243,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: X-API-KEY
+      - name: API-KEY
         in: header
         required: true
         type: string
@@ -89,7 +298,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: X-API-KEY
+      - name: API-KEY
         in: header
         required: true
         type: string
@@ -118,7 +327,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: X-API-KEY
+      - name: API-KEY
         in: header
         required: true
         type: string
@@ -146,7 +355,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: X-API-KEY
+      - name: API-KEY
         in: header
         required: true
         type: string
@@ -185,6 +394,29 @@ security:
   - UserSecurity: [] 
   - AdminSecurity: []
 definitions:
+  Bookshelf:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+      bookshelfUserId:
+        type: "integer"
+        format: "int64"
+      booksIds:
+        type: array
+        items:
+          type: string
+  BookshelfResponse:
+    type: "object"
+    properties:
+      bookshelfId:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      bookshelfUserId:
+        type: "integer"
+        format: "int64"
   Book:
     type: "object"
     properties:
@@ -227,6 +459,23 @@ definitions:
         example: "Biography"
     xml:
       name: "Tag"
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+    xml:
+      name: User
   Author:
     type: "object"
     required:

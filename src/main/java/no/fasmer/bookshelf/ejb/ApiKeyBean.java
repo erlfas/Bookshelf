@@ -52,31 +52,7 @@ public class ApiKeyBean {
                 final ApiKey newApiKey = new ApiKey();
                 newApiKey.setApiKey(hashedPassword);
                 newApiKey.setExpires(expiresDate);
-                newApiKey.setSecurityLevel(SecurityLevel.USER);
                 newApiKey.setBookshelfUser(bookshelfUser);
-            }
-            return keyBundle;
-        }
-    }
-    
-    public KeyBundle generateAndSave(Date expires, SecurityLevel securityLevel) {
-        if (expires == null) {
-            throw new IllegalArgumentException("expires cannot be null");
-        }
-        
-        if (expires.before(Date.from(Instant.now()))) {
-            throw new IllegalArgumentException("expires must be in the future");
-        }
-        
-        while (true) {
-            final KeyBundle keyBundle = KeyGenerator.generate();
-            final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
-            final ApiKey apiKey = apiKeyDao.find(hashedPassword);
-            if (apiKey == null) {
-                final ApiKey newApiKey = new ApiKey();
-                newApiKey.setApiKey(hashedPassword);
-                newApiKey.setExpires(expires);
-                newApiKey.setSecurityLevel(securityLevel);
             }
             return keyBundle;
         }
@@ -99,8 +75,14 @@ public class ApiKeyBean {
         if (apiKey == null) {
             return false;
         }
+        
+        final BookshelfUser bookshelfUser = apiKey.getBookshelfUser();
+        
+        if (bookshelfUser == null) {
+            return false;
+        }
 
-        return apiKey.getSecurityLevel() == SecurityLevel.ADMIN && notExpired(apiKey);
+        return bookshelfUser.getSecurityLevel() == SecurityLevel.ADMIN && notExpired(apiKey);
     }
 
     public boolean isValidUser(String apiKeyStr) {
@@ -120,8 +102,14 @@ public class ApiKeyBean {
         if (apiKey == null) {
             return false;
         }
+        
+        final BookshelfUser bookshelfUser = apiKey.getBookshelfUser();
+        
+        if (bookshelfUser == null) {
+            return false;
+        }
 
-        final SecurityLevel securityLevel = apiKey.getSecurityLevel();
+        final SecurityLevel securityLevel = bookshelfUser.getSecurityLevel();
 
         return (securityLevel == SecurityLevel.USER || securityLevel == SecurityLevel.ADMIN) && notExpired(apiKey);
     }
@@ -145,6 +133,27 @@ public class ApiKeyBean {
         }
 
         return notExpired(apiKey);
+    }
+    
+    public BookshelfUser getBookshelfUser(String apiKeyStr) {
+        if (StringUtils.isBlank(apiKeyStr)) {
+            logger.warning("Blank apiKey");
+            return null;
+        }
+        
+        if (apiKeyStr.length() != 32) {
+            return null;
+        }
+        
+        final KeyBundle keyBundle = KeyGenerator.extract(apiKeyStr);
+        final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
+        final ApiKey apiKey = apiKeyDao.find(hashedPassword);
+        
+        if (apiKey == null) {
+            return null;
+        }
+        
+        return apiKey.getBookshelfUser();
     }
 
     private boolean notExpired(ApiKey apiKey) {

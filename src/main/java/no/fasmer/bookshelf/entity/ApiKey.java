@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -40,9 +38,6 @@ public class ApiKey implements Serializable {
     @Temporal(TemporalType.DATE)
     @NotNull
     private Date expires;
-    
-    @Enumerated(EnumType.STRING)
-    private SecurityLevel securityLevel;
 
     public Long getId() {
         return id;
@@ -74,14 +69,6 @@ public class ApiKey implements Serializable {
 
     public void setExpires(Date expires) {
         this.expires = expires;
-    }
-
-    public SecurityLevel getSecurityLevel() {
-        return securityLevel;
-    }
-
-    public void setSecurityLevel(SecurityLevel securityLevel) {
-        this.securityLevel = securityLevel;
     }
     
 }

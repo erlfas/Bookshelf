@@ -12,13 +12,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import no.fasmer.bookshelf.ejb.ApiKeyBean;
+import no.fasmer.bookshelf.entity.BookshelfUser;
 
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    private static final String REALM = "example";
+    private static final String REALM = "Bookshelf";
     private static final String AUTHENTICATION_SCHEME = "Bearer";
 
     @Inject
@@ -45,6 +46,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         } catch (Exception e) {
             abortWithUnauthorized(requestContext);
         }
+        
+        final BookshelfUser bookshelfUser = apiKeyBean.getBookshelfUser(token);
+        
         
         requestContext.setSecurityContext(new SecurityContext() {
             @Override

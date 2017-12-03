@@ -3,6 +3,8 @@ package no.fasmer.bookshelf.entity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -40,6 +42,15 @@ public class BookshelfUser implements Serializable {
     
     @NotNull
     private String lastName;
+    
+    @NotNull
+    private String email;
+    
+    @NotNull
+    private String phone;
+    
+    @Enumerated(EnumType.STRING)
+    private SecurityLevel securityLevel;
 
     public Long getId() {
         return id;
@@ -79,6 +90,30 @@ public class BookshelfUser implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public SecurityLevel getSecurityLevel() {
+        return securityLevel;
+    }
+
+    public void setSecurityLevel(SecurityLevel securityLevel) {
+        this.securityLevel = securityLevel;
     }
     
 }
