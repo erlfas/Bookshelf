@@ -9,7 +9,7 @@ import no.fasmer.bookshelf.ejb.ApiKeyBean;
 import no.fasmer.bookshelf.ejb.BookBean;
 import no.fasmer.bookshelf.mapper.Mapper;
 import no.fasmer.bookshelf.model.Book;
-import no.fasmer.bookshelf.rest.vo.BookResponse;
+import no.fasmer.bookshelf.rest.dto.BookResponse;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 public class BookApiImpl implements BookApi {

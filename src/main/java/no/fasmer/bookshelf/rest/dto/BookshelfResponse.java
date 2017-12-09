@@ -1,4 +1,4 @@
-package no.fasmer.bookshelf.rest.vo;
+package no.fasmer.bookshelf.rest.dto;
 
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.rest.enums.RestStatus;

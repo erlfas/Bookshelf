@@ -6,8 +6,37 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import no.fasmer.bookshelf.entity.BookshelfUser;
+import no.fasmer.bookshelf.entity.SecurityLevel;
+import no.fasmer.bookshelf.model.User;
+import no.fasmer.bookshelf.utils.PasswordHashGenerator;
 
 public class Mapper {
+    
+    public static User mapBookshelfUser(BookshelfUser bookshelfUser) {
+        final User user = new User();
+        user.setEmail(bookshelfUser.getEmail());
+        user.setFirstName(bookshelfUser.getFirstName());
+        user.setLastName(bookshelfUser.getLastName());
+        user.setPassword(bookshelfUser.getPassword());
+        user.setPhone(bookshelfUser.getPhone());
+        user.setUsername(bookshelfUser.getUsername());
+        
+        return user;
+    }
+    
+    public static BookshelfUser mapUser(User user) {
+        final BookshelfUser bookshelfUser = new BookshelfUser();
+        bookshelfUser.setEmail(user.getEmail());
+        bookshelfUser.setFirstName(user.getFirstName());
+        bookshelfUser.setLastName(user.getLastName());
+        bookshelfUser.setPassword(PasswordHashGenerator.generate(user.getPassword(), "qxzuirbvmnty!#&/hapo"));
+        bookshelfUser.setPhone(user.getPhone());
+        bookshelfUser.setSecurityLevel(SecurityLevel.USER);
+        bookshelfUser.setUsername(user.getUsername());
+        
+        return bookshelfUser;
+    }
     
     public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf) {
         final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();

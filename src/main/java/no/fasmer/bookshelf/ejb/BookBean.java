@@ -8,7 +8,7 @@ import no.fasmer.bookshelf.dao.BookDao;
 import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.mapper.Mapper;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
-import no.fasmer.bookshelf.rest.vo.BookResponse;
+import no.fasmer.bookshelf.rest.dto.BookResponse;
 import org.apache.commons.lang3.StringUtils;
 
 @Stateless

@@ -37,7 +37,7 @@ paths:
         in: header
         required: true
         type: string
-      - name: "userId"
+      - name: username
         in: path
         required: true
         type: string
