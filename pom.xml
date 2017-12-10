@@ -109,11 +109,6 @@
             <version>${swagger-version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>org.tuckey</groupId>
-            <artifactId>urlrewritefilter</artifactId>
-            <version>4.0.3</version>
-        </dependency>
     </dependencies>
     
     <build>
@@ -174,7 +169,7 @@
                             <arguments>
                                 <argument>${frontend.path}/node_modules/@angular/cli/bin/ng</argument>
                                 <argument>build</argument>
-                                
+                                <argument>--base-href=/bookshelf/</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -278,14 +273,21 @@
                     </execution>
                 </executions>
             </plugin>
+            
             <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>1.0.2.Final</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <filename>${project.build.finalName}.war</filename>
+                    <webResources>
+                        <resource>
+                            <directory>${frontend.path}/dist</directory>
+                            <targetPath>.</targetPath>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

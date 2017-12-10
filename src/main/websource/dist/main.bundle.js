@@ -165,7 +165,8 @@ var LoginComponent = (function () {
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 var environment = {
-    production: false
+    production: false,
+    webservice: "http://localhost:8080"
 };
 //# sourceMappingURL=/Users/erlend321/NetBeansProjects/Bookshelf/src/main/websource/src/environment.js.map
 

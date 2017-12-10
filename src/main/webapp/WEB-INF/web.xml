@@ -4,33 +4,9 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <filter>
-        <filter-name>UrlRewriteFilter</filter-name>
-        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-        <!-- For rule debugging to the console log -->
-        <!--<init-param>-->
-        <!--<param-name>logLevel</param-name>-->
-        <!--<param-value>TRACE</param-value>-->
-        <!--</init-param>-->
-    </filter>
-
-    <filter-mapping>
-        <filter-name>UrlRewriteFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
-    
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
     <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <servlet-name>jsp</servlet-name>
+        <url-pattern>*.html</url-pattern>
     </servlet-mapping>
-    <welcome-file-list>
-        <welcome-file>/faces/index.xhtml</welcome-file>
-    </welcome-file-list>
+    
 </web-app>
