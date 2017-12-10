@@ -15,6 +15,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <resteasy-version>3.1.4.Final</resteasy-version>
         <swagger-version>1.5.16</swagger-version>
+        <frontend.path>${project.basedir}/src/main/websource/</frontend.path>
+        <node.path>${project.basedir}/</node.path>
+        <node.version>v6.9.2</node.version>
+        <yarn.version>v0.23.2</yarn.version>
     </properties>
     
     <dependencies>
@@ -106,15 +110,92 @@
         </dependency>
         
         <dependency>
-            <groupId>org.apache.oltu.oauth2</groupId>
-            <artifactId>org.apache.oltu.oauth2.client</artifactId>
-            <version>1.0.2</version>
+            <groupId>org.tuckey</groupId>
+            <artifactId>urlrewritefilter</artifactId>
+            <version>4.0.3</version>
         </dependency>
     </dependencies>
     
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <workingDirectory>${frontend.path}</workingDirectory>
+                    <installDirectory>${node.path}</installDirectory>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <yarnVersion>${yarn.version}</yarnVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and yarn</id>
+                        <goals>
+                            <goal>install-node-and-yarn</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                    <execution>
+                        <id>yarn install</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                    <execution>
+                        <id>yarn rebuild node-sass</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>add --force node-sass --cache-folder ${node.path}/node/yarn/.cache/</arguments>
+                        </configuration>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <executions>
+                    <execution>
+                        <id>@angular/cli build project</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <executable>${node.path}/node/node</executable>
+                            <workingDirectory>${frontend.path}</workingDirectory>
+                            <arguments>
+                                <argument>${frontend.path}/node_modules/@angular/cli/bin/ng</argument>
+                                <argument>build</argument>
+                                
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>@angular/cli test project</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <executable>${node.path}/node/node</executable>
+                            <workingDirectory>${frontend.path}</workingDirectory>
+                            <arguments>
+                                <argument>${frontend.path}/node_modules/@angular/cli/bin/ng</argument>
+                                <argument>test</argument>
+                            </arguments>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             
             <plugin>
                 <groupId>com.github.kongchen</groupId>
