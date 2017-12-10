@@ -169,7 +169,7 @@
                             <arguments>
                                 <argument>${frontend.path}/node_modules/@angular/cli/bin/ng</argument>
                                 <argument>build</argument>
-                                <argument>--base-href=/bookshelf/</argument>
+                                <argument>--base-href=/Bookshelf/</argument>
                             </arguments>
                         </configuration>
                     </execution>
