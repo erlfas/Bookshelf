@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import no.fasmer.bookshelf.dao.ApiKeyDao;
 import no.fasmer.bookshelf.dao.BookshelfUserDao;
+import no.fasmer.bookshelf.rest.dto.AuthenticatedUser;
 import no.fasmer.bookshelf.entity.ApiKey;
 import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.entity.SecurityLevel;
@@ -29,7 +30,7 @@ public class ApiKeyBean {
     @Inject
     private BookshelfUserDao bookshelfUserDao;
     
-    public KeyBundle issueUserToken(String username) {
+    public AuthenticatedUser issueUserToken(String username) {
         if (StringUtils.isBlank(username)) {
             throw new IllegalArgumentException("Blank username");
         }
@@ -40,22 +41,29 @@ public class ApiKeyBean {
             throw new IllegalArgumentException("Invalid username");
         }
         
-        while (true) {
-            final KeyBundle keyBundle = KeyGenerator.generate();
-            final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
-            final ApiKey apiKey = apiKeyDao.find(hashedPassword);
+        int i = 0;
+        while (i < 10) {
+            final KeyBundle apiKeyBundle = KeyGenerator.generate();
+            final String hashedApiKey = PasswordHashGenerator.generate(apiKeyBundle.getPassword(), apiKeyBundle.getSalt());
+            final ApiKey apiKey = apiKeyDao.find(hashedApiKey);
             if (apiKey == null) {
                 final LocalDateTime expires = LocalDateTime.now().plusDays(1);
                 final Instant expiresInstant = expires.atZone(ZoneId.systemDefault()).toInstant();
                 final Date expiresDate = Date.from(expiresInstant);
                 
                 final ApiKey newApiKey = new ApiKey();
-                newApiKey.setApiKey(hashedPassword);
+                newApiKey.setApiKey(hashedApiKey);
                 newApiKey.setExpires(expiresDate);
                 newApiKey.setBookshelfUser(bookshelfUser);
+                
+                apiKeyDao.persist(newApiKey);
+                
+                return new AuthenticatedUser(username, hashedApiKey, expiresDate);
             }
-            return keyBundle;
+            i++;
         }
+        
+        throw new IllegalStateException("Could not create API key.");
     }
 
     public boolean isValidAdmin(String apiKeyStr) {
