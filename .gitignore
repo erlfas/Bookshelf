@@ -1,3 +1,4 @@
 /target/
 src/main/websource/node_modules
+src/main/websource/dist
 node
