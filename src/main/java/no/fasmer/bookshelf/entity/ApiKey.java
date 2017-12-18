@@ -20,6 +20,10 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
             name = "findApiKey",
             query = "SELECT a FROM ApiKey a WHERE a.apiKey = :ak"
+    ),
+    @NamedQuery(
+            name = "findByUsernameAndApiKey",
+            query = "SELECT a FROM ApiKey a WHERE a.apiKey = :ak AND a.bookshelfUser.email = :un"
     )
 })
 public class ApiKey implements Serializable {

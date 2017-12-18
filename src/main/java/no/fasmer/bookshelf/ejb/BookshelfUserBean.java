@@ -19,6 +19,11 @@ public class BookshelfUserBean {
     
     public RestStatus save(BookshelfUser bookshelfUser) {
         try {
+            final BookshelfUser existingUser = findByUsername(bookshelfUser.getEmail());
+            if (existingUser != null) {
+                return RestStatus.CONFLICT;
+            }
+            
             bookshelfUserDao.persist(bookshelfUser);
             return RestStatus.CREATED;
         } catch (Exception e) {

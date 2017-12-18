@@ -19,7 +19,7 @@ tags:
 schemes:
 - "http"
 paths:
-  /user/{userId}:
+  /user/{username}:
     get:
       tags:
       - "user"
@@ -54,7 +54,7 @@ paths:
       - "user"
       summary: "Register a new user"
       description: "Register a new user"
-      operationId: "addUser"
+      operationId: "registerUser"
       consumes:
       - "application/json"
       - "application/xml"
@@ -62,10 +62,6 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: API-KEY
-        in: header
-        required: true
-        type: string
       - in: "body"
         name: "body"
         description: "User object"
@@ -75,6 +71,8 @@ paths:
       responses:
         201:
           description: "successful operation"
+          schema:
+            $ref: "#/definitions/AuthenticatedUser"
         400:
           description: "Invalid input"
       security:
@@ -104,7 +102,7 @@ paths:
         200:
           description: successful operation
           schema:
-            type: string
+            $ref: "#/definitions/AuthenticatedUser"
           headers:
             X-Rate-Limit:
               type: integer
@@ -418,17 +416,6 @@ definitions:
         type: array
         items:
           type: string
-  BookshelfResponse:
-    type: "object"
-    properties:
-      bookshelfId:
-        type: "integer"
-        format: "int64"
-      title:
-        type: "string"
-      bookshelfUserId:
-        type: "integer"
-        format: "int64"
   Book:
     type: "object"
     properties:
@@ -471,6 +458,16 @@ definitions:
         example: "Biography"
     xml:
       name: "Tag"
+  AuthenticatedUser:
+    type: object
+    properties:
+      username:
+        type: string
+      hashedApiKey:
+        type: string
+      expires:
+        type: string
+        format: date
   User:
     type: object
     properties:

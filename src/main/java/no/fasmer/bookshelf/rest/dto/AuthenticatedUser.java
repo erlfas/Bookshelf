@@ -7,12 +7,12 @@ public class AuthenticatedUser implements Serializable {
     
     private final String username;
     private final String hashedApiKey;
-    private final Date expiresDate;
+    private final Date expires;
 
-    public AuthenticatedUser(String apiKey, String hashedPassword, Date expiresDate) {
-        this.username = apiKey;
-        this.hashedApiKey = hashedPassword;
-        this.expiresDate = expiresDate;
+    public AuthenticatedUser(String username, String hashedApiKey, Date expires) {
+        this.username = username;
+        this.hashedApiKey = hashedApiKey;
+        this.expires = expires;
     }
 
     public String getUsername() {
@@ -23,8 +23,8 @@ public class AuthenticatedUser implements Serializable {
         return hashedApiKey;
     }
 
-    public Date getExpiresDate() {
-        return expiresDate;
+    public Date getExpires() {
+        return expires;
     }
     
 }

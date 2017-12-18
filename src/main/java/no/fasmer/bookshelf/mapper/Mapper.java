@@ -30,7 +30,7 @@ public class Mapper {
         bookshelfUser.setEmail(user.getEmail());
         bookshelfUser.setFirstName(user.getFirstName());
         bookshelfUser.setLastName(user.getLastName());
-        bookshelfUser.setPassword(PasswordHashGenerator.generate(user.getPassword(), "qxzuirbvmnty!#&/hapo"));
+        bookshelfUser.setPassword(PasswordHashGenerator.generate(user.getPassword(), PasswordHashGenerator.DEFAULT_SALT));
         bookshelfUser.setPhone(user.getPhone());
         bookshelfUser.setSecurityLevel(SecurityLevel.USER);
         bookshelfUser.setUsername(user.getUsername());

@@ -10,7 +10,7 @@ public class PasswordHashGenerator {
     
     private final static String ENCODING = "UTF-8";
     private final static String ALGORITHM = "SHA-512";
-    private final static String DEFAULT_SALT = "";
+    public final static String DEFAULT_SALT = "qxzuirbvmnty!#&/hapo";
     
     public static String generate(String passwordToHash) {
         try {

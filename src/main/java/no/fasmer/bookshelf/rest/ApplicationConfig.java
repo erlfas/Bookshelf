@@ -23,7 +23,6 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(no.fasmer.bookshelf.rest.AuthenticationEndpoint.class);
         resources.add(no.fasmer.bookshelf.rest.AuthenticationFilter.class);
     }
     

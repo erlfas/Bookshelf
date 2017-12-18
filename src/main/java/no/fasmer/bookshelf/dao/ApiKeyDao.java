@@ -21,4 +21,11 @@ public class ApiKeyDao extends AbstractDao<ApiKey> {
                 .getSingleResult();
     }
     
+    public ApiKey findByUsernameAndApiKey(String apiKey, String username) {
+        return (ApiKey) em.createNamedQuery("findApiKey")
+                .setParameter("ak", apiKey)
+                .setParameter("un", username)
+                .getSingleResult();
+    }
+    
 }
