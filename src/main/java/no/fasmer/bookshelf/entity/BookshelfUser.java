@@ -44,9 +44,6 @@ public class BookshelfUser implements Serializable {
     private String lastName;
     
     @NotNull
-    private String email;
-    
-    @NotNull
     private String phone;
     
     @Enumerated(EnumType.STRING)
@@ -90,14 +87,6 @@ public class BookshelfUser implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {

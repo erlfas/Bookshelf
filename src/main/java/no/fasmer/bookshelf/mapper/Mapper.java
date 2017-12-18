@@ -15,7 +15,6 @@ public class Mapper {
     
     public static User mapBookshelfUser(BookshelfUser bookshelfUser) {
         final User user = new User();
-        user.setEmail(bookshelfUser.getEmail());
         user.setFirstName(bookshelfUser.getFirstName());
         user.setLastName(bookshelfUser.getLastName());
         user.setPassword(bookshelfUser.getPassword());
@@ -27,7 +26,6 @@ public class Mapper {
     
     public static BookshelfUser mapUser(User user) {
         final BookshelfUser bookshelfUser = new BookshelfUser();
-        bookshelfUser.setEmail(user.getEmail());
         bookshelfUser.setFirstName(user.getFirstName());
         bookshelfUser.setLastName(user.getLastName());
         bookshelfUser.setPassword(PasswordHashGenerator.generate(user.getPassword(), PasswordHashGenerator.DEFAULT_SALT));

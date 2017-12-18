@@ -35,7 +35,7 @@ public class UserApiImpl implements UserApi {
         final RestStatus restStatus = bookshelfUserBean.save(bookshelfUser);
 
         if (restStatus == RestStatus.CREATED) {
-            final AuthenticatedUser authenticatedUser = apiKeyBean.issueUserToken(user.getEmail());
+            final AuthenticatedUser authenticatedUser = apiKeyBean.issueUserToken(user.getUsername());
             return Response.ok(authenticatedUser).build();
         }
 

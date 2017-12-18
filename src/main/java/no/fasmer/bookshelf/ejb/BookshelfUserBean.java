@@ -19,7 +19,7 @@ public class BookshelfUserBean {
     
     public RestStatus save(BookshelfUser bookshelfUser) {
         try {
-            final BookshelfUser existingUser = findByUsername(bookshelfUser.getEmail());
+            final BookshelfUser existingUser = findByUsername(bookshelfUser.getUsername());
             if (existingUser != null) {
                 return RestStatus.CONFLICT;
             }
@@ -33,12 +33,7 @@ public class BookshelfUserBean {
     }
     
     public BookshelfUser findByUsername(String username) {
-        final BookshelfUser bookshelfUser = bookshelfUserDao.findByUsername(username);
-        if (bookshelfUser != null) {
-            bookshelfUser.setPassword(null);
-        }
-        
-        return bookshelfUser;
+        return bookshelfUserDao.findByUsername(username);
     }
     
 }
