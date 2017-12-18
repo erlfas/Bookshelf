@@ -28,9 +28,7 @@ paths:
       operationId: "getUser"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -57,9 +55,7 @@ paths:
       operationId: "registerUser"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - in: "body"
@@ -85,7 +81,6 @@ paths:
       description: ""
       operationId: "loginUser"
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: username
@@ -122,7 +117,6 @@ paths:
       description: ""
       operationId: logoutUser
       produces:
-        - application/xml
         - application/json
       parameters: []
       responses:
@@ -137,9 +131,7 @@ paths:
       operationId: "getBookshelf"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -170,9 +162,7 @@ paths:
       operationId: "addBookshelf"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -206,9 +196,7 @@ paths:
       operationId: "addBookToBookshelf"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -242,9 +230,7 @@ paths:
       operationId: "addBook"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -272,7 +258,6 @@ paths:
       description: "Returns a single book"
       operationId: "getBookByIsbn13"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: "isbn13"
@@ -299,9 +284,7 @@ paths:
       operationId: "updateBook"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -332,7 +315,6 @@ paths:
       description: ""
       operationId: "deleteBook"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: API-KEY
@@ -467,7 +449,6 @@ definitions:
         type: string
       expires:
         type: string
-        format: date
   User:
     type: object
     properties:

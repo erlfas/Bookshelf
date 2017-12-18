@@ -18,7 +18,7 @@ public class KeyGenerator {
     
     public static KeyBundle generate() {
         final UUID uuid = UUID.randomUUID();
-        final String key = uuid.toString();
+        final String key = uuid.toString().replace("-", "");
         final String password = key.substring(0, 10); // 10
         final String salt = key.substring(10, key.length()); // 22
         return new KeyBundle(key, password, salt);

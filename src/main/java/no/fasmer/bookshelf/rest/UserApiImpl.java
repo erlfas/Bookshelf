@@ -36,7 +36,7 @@ public class UserApiImpl implements UserApi {
 
         if (restStatus == RestStatus.CREATED) {
             final AuthenticatedUser authenticatedUser = apiKeyBean.issueUserToken(user.getUsername());
-            return Response.ok(authenticatedUser).build();
+            return Response.ok(Mapper.mapAuthenticatedUser(authenticatedUser)).build();
         }
 
         return Response.status(restStatus.getCode()).build();

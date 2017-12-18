@@ -1,6 +1,7 @@
 package no.fasmer.bookshelf.mapper;
 
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,6 +13,15 @@ import no.fasmer.bookshelf.model.User;
 import no.fasmer.bookshelf.utils.PasswordHashGenerator;
 
 public class Mapper {
+    
+    public static no.fasmer.bookshelf.model.AuthenticatedUser mapAuthenticatedUser(no.fasmer.bookshelf.rest.dto.AuthenticatedUser authenticatedUserDto) {
+        final no.fasmer.bookshelf.model.AuthenticatedUser authenticatedUser = new no.fasmer.bookshelf.model.AuthenticatedUser();
+        authenticatedUser.setExpires(authenticatedUserDto.getExpires().toInstant().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        authenticatedUser.setHashedApiKey(authenticatedUserDto.getHashedApiKey());
+        authenticatedUser.setUsername(authenticatedUserDto.getUsername());
+        
+        return authenticatedUser;
+    }
     
     public static User mapBookshelfUser(BookshelfUser bookshelfUser) {
         final User user = new User();

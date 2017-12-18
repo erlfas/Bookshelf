@@ -1,5 +1,6 @@
 package no.fasmer.bookshelf.dao;
 
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -16,16 +17,28 @@ public class ApiKeyDao extends AbstractDao<ApiKey> {
     }
     
     public ApiKey find(String apiKey) {
-        return (ApiKey) em.createNamedQuery("findApiKey")
+        final List<ApiKey> results = em.createNamedQuery("findApiKey")
                 .setParameter("ak", apiKey)
-                .getSingleResult();
+                .getResultList();
+        
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        
+        return null;
     }
     
     public ApiKey findByUsernameAndApiKey(String apiKey, String username) {
-        return (ApiKey) em.createNamedQuery("findApiKey")
+        final List<ApiKey> results = em.createNamedQuery("findApiKey")
                 .setParameter("ak", apiKey)
                 .setParameter("un", username)
-                .getSingleResult();
+                .getResultList();
+        
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        
+        return null;
     }
     
 }
