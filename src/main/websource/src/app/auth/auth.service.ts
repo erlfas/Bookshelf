@@ -37,13 +37,6 @@ export class AuthenticationService {
       );
   }
 
-  registerUser2(user: User): Observable<AuthenticatedUser> {
-    const authUrl = `http://localhost:8080/Bookshelf/webresources/user`;
-    const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-
-    return this.http.post<AuthenticatedUser>(authUrl, user, { headers: header });
-  }
-
   registerUser(user: User): void {
     const authUrl = `http://localhost:8080/Bookshelf/webresources/user`;
     const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
@@ -58,6 +51,7 @@ export class AuthenticationService {
             hashedApiKey: data.hashedApiKey,
             expires: data.expires
           };
+          this.router.navigate(['/login']);
       },
       err => {
         console.log('error');
