@@ -19,33 +19,6 @@ tags:
 schemes:
 - "http"
 paths:
-  /user/get/{username}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user"
-      description: "Get user"
-      operationId: "getUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: API-KEY
-        in: header
-        required: true
-        type: string
-      - name: username
-        in: path
-        required: true
-        type: string
-      responses:
-        200:
-          description: "successful operation"
-        404:
-          description: "Invalid user id"
-      security:
-        - UserSecurity: []
   /user:
     post:
       tags:
@@ -109,19 +82,6 @@ paths:
               description: date in UTC when token expires
         400:
           description: Invalid username/password supplied
-  /user/logout:
-    get:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      description: ""
-      operationId: logoutUser
-      produces:
-        - application/json
-      parameters: []
-      responses:
-        default:
-          description: successful operation
   /bookshelf/{bookshelfId}:
     get:
       tags:

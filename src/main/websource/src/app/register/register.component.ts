@@ -43,7 +43,9 @@ export class RegisterComponent implements OnInit {
       this.registerForm.controls['phone'].value
     );
 
-    this.authenticationService.registerUser2(user)
+    this.authenticationService.registerUser(user);
+
+    /*this.authenticationService.registerUser2(user)
       .subscribe(
         data => {
           console.log('Fetched user: ', data.username);
@@ -57,6 +59,6 @@ export class RegisterComponent implements OnInit {
         err => {
           console.log('error');
         }
-      );
+      );*/
   }
 }

@@ -45,22 +45,6 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
-    public Response getUser(String apiKey, String username, SecurityContext securityContext) {
-        // TODO
-        if (!apiKeyBean.isValid(apiKey)) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-
-        final BookshelfUser bookshelfUser = bookshelfUserBean.findByUsername(username);
-
-        if (bookshelfUser != null) {
-            return Response.ok(Mapper.mapBookshelfUser(bookshelfUser)).build();
-        }
-
-        return Response.status(Response.Status.NOT_FOUND).build();
-    }
-
-    @Override
     public Response loginUser(String username, String password, SecurityContext securityContext) {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -82,11 +66,6 @@ public class UserApiImpl implements UserApi {
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-    }
-
-    @Override
-    public Response logoutUser(SecurityContext securityContext) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void authenticate(String username, String password) throws Exception {

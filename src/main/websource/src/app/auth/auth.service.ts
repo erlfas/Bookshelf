@@ -17,16 +17,6 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router) {}
 
-  private handleErrorPromise (error: Response | any) {
-    console.error(error.message || error);
-    return Promise.reject(error.message || error);
-  }
-
-  private handleErrorObservable (error: Response | any) {
-    console.error(error.message || error);
-    return Observable.throw(error.message || error);
-  }
-
   loginUser(username: string, password: string) {
     console.log('AuthenticationService: loginUser: ', username, password);
     const url = `http://localhost:8080/Bookshelf/webresources/user/login?username=${username}&password=${password}`;
