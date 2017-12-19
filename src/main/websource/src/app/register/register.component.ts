@@ -6,6 +6,7 @@ import { UserPassword } from '../models/userpwd.model';
 import { User } from '../models/user.model';
 import { AuthenticatedUser } from '../models/authenticateduser.model';
 import { AuthenticationService } from 'app/auth/auth.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,6 @@ import { AuthenticationService } from 'app/auth/auth.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  authenticatedUser: AuthenticatedUser;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,28 +41,6 @@ export class RegisterComponent implements OnInit {
       this.registerForm.controls['phone'].value
     );
 
-    console.log('Authenticating user');
-
-    const authUser: AuthenticatedUser = this.authenticationService.login(user.email, user.password);
-
-    console.log(authUser);
-
-    const headers: Headers = new Headers();
-    headers.append('API-KEY', this.authenticatedUser.hashedApiKey);
-
-    const opts: RequestOptions = new RequestOptions();
-    opts.headers = headers;
-
-    const registerUserUrl = `localhost:8080/Bookshelf/webresources/user`;
-
-    this.http
-      .post(registerUserUrl, JSON.stringify(user), opts)
-      .subscribe((res: Response) => {
-        if (res.ok) {
-          console.log('ok');
-        } else {
-          console.log('failed');
-        }
-      });
+    this.authenticationService.registerUser(user);
   }
 }

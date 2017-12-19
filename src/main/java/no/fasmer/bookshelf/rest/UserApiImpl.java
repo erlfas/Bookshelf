@@ -31,6 +31,8 @@ public class UserApiImpl implements UserApi {
 
     @Override
     public Response registerUser(User user, SecurityContext securityContext) {
+        logger.info("registerUser: start");
+        
         final BookshelfUser bookshelfUser = Mapper.mapUser(user);
         final RestStatus restStatus = bookshelfUserBean.save(bookshelfUser);
 

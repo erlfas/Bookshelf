@@ -1,39 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { AuthenticatedUser } from '../models/authenticateduser.model';
 import { UserPassword } from '../models/userpwd.model';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthenticationService {
+
   authenticatedUser: AuthenticatedUser;
 
   constructor(private http: HttpClient) {}
 
-  authenticate(username: string, password: string): Observable<AuthenticatedUser> {
-    const authUrl = `localhost:8080/Bookshelf/webresources/user`;
-    console.log('authenticate start');
-    return this.http.post<AuthenticatedUser>(authUrl, JSON.stringify(new UserPassword(username, password)));
+  private handleErrorPromise (error: Response | any) {
+    console.error(error.message || error);
+    return Promise.reject(error.message || error);
   }
 
-  login(username: string, password: string): AuthenticatedUser {
-    console.log('login start');
-    this.authenticate(username, password).map(x => {
-      console.log('login: ', x);
-      if (x && x.hashedApiKey) {
-        console.log('login 2: ', x);
-        this.authenticatedUser = x;
-        localStorage.setItem('currentUser', JSON.stringify(x));
-      }
-      console.log('login 3: ', x);
-      return x;
-    });
-
-    return this.authenticatedUser;
+  private handleErrorObservable (error: Response | any) {
+    console.error(error.message || error);
+    return Observable.throw(error.message || error);
   }
 
-  getAuthenticatedUser(): AuthenticatedUser {
+  registerUser(user: User): void {
+    const authUrl = `http://localhost:8080/Bookshelf/webresources/user`;
+    const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+    this.http
+      .post<AuthenticatedUser>(authUrl, user, { headers: header })
+      .subscribe(x => {
+        console.log('Fetched user: ', x.username);
+        this.authenticatedUser = {
+          username: x.username,
+          hashedApiKey: x.hashedApiKey,
+          expires: x.expires
+        };
+      });
+  }
+
+  public getAuthenticatedUser(): AuthenticatedUser {
     return this.authenticatedUser;
   }
 

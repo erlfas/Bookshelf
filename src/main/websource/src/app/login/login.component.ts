@@ -24,6 +24,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit({ loginUser, valid }: { loginUser: LoginUser; valid: boolean }) {
-    this.authenticationService.login(loginUser.email, loginUser.password);
+    ;
   }
 }
