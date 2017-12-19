@@ -19,7 +19,7 @@ tags:
 schemes:
 - "http"
 paths:
-  /user/{username}:
+  /user/get/{username}:
     get:
       tags:
       - "user"

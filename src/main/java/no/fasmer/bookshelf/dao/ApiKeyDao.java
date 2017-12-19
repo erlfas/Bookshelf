@@ -16,6 +16,19 @@ public class ApiKeyDao extends AbstractDao<ApiKey> {
         super(ApiKey.class);
     }
     
+    public ApiKey findByUsernameAndPassword(String username, String hashedPassword) {
+        final List<ApiKey> results = em.createNamedQuery("findByUsername")
+                .setParameter("un", username)
+                .setParameter("pwd", hashedPassword)
+                .getResultList();
+        
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        
+        return null;
+    }
+    
     public ApiKey find(String apiKey) {
         final List<ApiKey> results = em.createNamedQuery("findApiKey")
                 .setParameter("ak", apiKey)
@@ -29,7 +42,7 @@ public class ApiKeyDao extends AbstractDao<ApiKey> {
     }
     
     public ApiKey findByUsernameAndApiKey(String apiKey, String username) {
-        final List<ApiKey> results = em.createNamedQuery("findApiKey")
+        final List<ApiKey> results = em.createNamedQuery("findByUsernameAndApiKey")
                 .setParameter("ak", apiKey)
                 .setParameter("un", username)
                 .getResultList();

@@ -45,8 +45,8 @@ public class ApiKeyBean {
             throw new IllegalArgumentException("Invalid username/password");
         }
 
-        final String hashedApiKey = PasswordHashGenerator.generate(password, PasswordHashGenerator.DEFAULT_SALT);
-        final ApiKey apiKey = apiKeyDao.find(hashedApiKey);
+        final String hashedPassword = PasswordHashGenerator.generate(password, PasswordHashGenerator.DEFAULT_SALT);
+        final ApiKey apiKey = apiKeyDao.findByUsernameAndPassword(username, hashedPassword);
 
         if (apiKey == null) {
             throw new IllegalArgumentException("Invalid username/password");
@@ -61,7 +61,7 @@ public class ApiKeyBean {
             }
         }
 
-        return new AuthenticatedUser(username, hashedApiKey, apiKey.getExpires());
+        return new AuthenticatedUser(username, hashedPassword, apiKey.getExpires());
     }
 
     public AuthenticatedUser issueUserToken(String username) {

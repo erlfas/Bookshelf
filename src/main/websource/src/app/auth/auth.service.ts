@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, Response } from '@angular/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { AuthenticatedUser } from '../models/authenticateduser.model';
@@ -12,7 +13,9 @@ export class AuthenticationService {
 
   authenticatedUser: AuthenticatedUser;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router) {}
 
   private handleErrorPromise (error: Response | any) {
     console.error(error.message || error);
@@ -24,24 +27,55 @@ export class AuthenticationService {
     return Observable.throw(error.message || error);
   }
 
+  loginUser(username: string, password: string) {
+    console.log('AuthenticationService: loginUser: ', username, password);
+    const url = `http://localhost:8080/Bookshelf/webresources/user/login?username=${username}&password=${password}`;
+    const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+    this.http
+      .get<AuthenticatedUser>(url)
+      .subscribe(
+        data => {
+          localStorage.setItem('currentUser', JSON.stringify(data));
+          this.router.navigate(['/bookshelf']);
+        },
+        err => {
+          console.log('AuthenticationService: loginUser: error');
+          this.router.navigate(['/home']);
+        },
+        () => {}
+      );
+  }
+
+  registerUser2(user: User): Observable<AuthenticatedUser> {
+    const authUrl = `http://localhost:8080/Bookshelf/webresources/user`;
+    const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+    return this.http.post<AuthenticatedUser>(authUrl, user, { headers: header });
+  }
+
   registerUser(user: User): void {
     const authUrl = `http://localhost:8080/Bookshelf/webresources/user`;
     const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
 
     this.http
       .post<AuthenticatedUser>(authUrl, user, { headers: header })
-      .subscribe(x => {
-        console.log('Fetched user: ', x.username);
-        this.authenticatedUser = {
-          username: x.username,
-          hashedApiKey: x.hashedApiKey,
-          expires: x.expires
-        };
+      .subscribe(
+        data => {
+          console.log('Fetched user: ', data.username);
+          this.authenticatedUser = {
+            username: data.username,
+            hashedApiKey: data.hashedApiKey,
+            expires: data.expires
+          };
+      },
+      err => {
+        console.log('error');
       });
   }
 
-  public getAuthenticatedUser(): AuthenticatedUser {
-    return this.authenticatedUser;
+  getAuthenticatedUser(): AuthenticatedUser {
+    return JSON.parse(localStorage.getItem('currentUser'));
   }
 
   logout() {
