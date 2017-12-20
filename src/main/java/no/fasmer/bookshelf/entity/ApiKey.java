@@ -45,7 +45,7 @@ public class ApiKey implements Serializable {
     @Column(unique = true)
     private String apiKey;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date expires;
 

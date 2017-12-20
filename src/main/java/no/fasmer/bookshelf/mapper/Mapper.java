@@ -17,7 +17,7 @@ public class Mapper {
     public static no.fasmer.bookshelf.model.AuthenticatedUser mapAuthenticatedUser(no.fasmer.bookshelf.rest.dto.AuthenticatedUser authenticatedUserDto) {
         final no.fasmer.bookshelf.model.AuthenticatedUser authenticatedUser = new no.fasmer.bookshelf.model.AuthenticatedUser();
         authenticatedUser.setExpires(authenticatedUserDto.getExpires().toInstant().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        authenticatedUser.setHashedApiKey(authenticatedUserDto.getHashedApiKey());
+        authenticatedUser.setHashedApiKey(authenticatedUserDto.getApiKey());
         authenticatedUser.setUsername(authenticatedUserDto.getUsername());
         
         return authenticatedUser;
@@ -48,8 +48,8 @@ public class Mapper {
     
     public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf) {
         final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
-        swaggerBookshelf.setBooksIds(jpaBookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()));
-        swaggerBookshelf.setBookshelfUserId(jpaBookshelf.getBookshelfUser().getId());
+        swaggerBookshelf.setBooks(jpaBookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()));
+        swaggerBookshelf.setUsername(jpaBookshelf.getBookshelfUser().getUsername());
         swaggerBookshelf.setTitle(jpaBookshelf.getTitle());
         
         return swaggerBookshelf;

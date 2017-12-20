@@ -82,7 +82,7 @@ paths:
               description: date in UTC when token expires
         400:
           description: Invalid username/password supplied
-  /bookshelf/{bookshelfId}:
+  /bookshelf:
     get:
       tags:
       - "bookshelf"
@@ -98,11 +98,15 @@ paths:
         in: header
         required: true
         type: string
-      - in: path
-        name: bookshelfId
-        type: integer
-        format: int64
-        description: "The id of the bookshelf"
+      - in: query
+        name: title
+        type: string
+        description: "The title of the bookshelf"
+        required: true
+      - in: query
+        name: username
+        type: string
+        description: The username of the user of the bookshelf
         required: true
       responses:
         200:
@@ -113,7 +117,6 @@ paths:
           description: "Invalid bookshelfId"
       security:
         - UserSecurity: []
-  /bookshelf:
     post:
       tags:
       - "bookshelf"
@@ -129,17 +132,12 @@ paths:
         in: header
         required: true
         type: string
-      - in: "query"
-        name: "userId"
-        type: integer
-        format: int64
-        description: "The id of the user"
+      - in: "body"
+        name: "body"
+        description: "Bookshelf"
         required: true
-      - in: "query"
-        name: "title"
-        type: "string"
-        description: "Bookshelf to be registered"
-        required: true
+        schema:
+          $ref: "#/definitions/BookshelfToAdd"
       responses:
         201:
           description: "created bookshelf"
@@ -147,7 +145,7 @@ paths:
           description: "Invalid bookshelfUserId"
       security:
         - UserSecurity: []
-  /bookshelf/{bookshelfId}/book/{isbn13}:
+  /bookshelf/addbook:
     post:
       tags:
       - "bookshelf"
@@ -163,17 +161,12 @@ paths:
         in: header
         required: true
         type: string
-      - name: bookshelfId
-        in: path
-        description: id of bookshelf
+      - name: body
+        in: body
+        description: Book
         required: true
-        type: integer
-        format: int64
-      - name: isbn13
-        in: path
-        description: isbn13 of book to add to bookshelf
-        required: true
-        type: string
+        schema:
+          $ref: "#/definitions/BookToAdd"
       responses:
         200:
           description: "successful operation"
@@ -347,17 +340,38 @@ security:
   - AdminSecurity: []
 definitions:
   Bookshelf:
-    type: "object"
+    type: object
     properties:
       title:
-        type: "string"
-      bookshelfUserId:
-        type: "integer"
-        format: "int64"
-      booksIds:
+        type: string
+        example: Fiction
+      username:
+        type: string
+        example: john@smith.com
+      books:
         type: array
         items:
           type: string
+  BookshelfToAdd:
+    type: object
+    properties:
+      title:
+        type: string
+        example: Fiction
+      username:
+        type: string
+        example: john@smith.com
+  BookToAdd:
+    type: object
+    properties:
+      bookshelfTitle:
+        type: string
+        example: Fiction
+      username:
+        type: string
+        example: john@smith.com
+      book:
+        $ref:  "#/definitions/Book"
   Book:
     type: "object"
     properties:

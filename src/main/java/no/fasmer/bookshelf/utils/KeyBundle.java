@@ -5,25 +5,16 @@ import java.io.Serializable;
 public class KeyBundle implements Serializable {
     
     private final String key;
-    private final String password;
-    private final String salt;
 
-    public KeyBundle(String key, String password, String salt) {
+    public KeyBundle(String key) {
+        if (key == null || key.length() != 32) {
+            throw new IllegalArgumentException("Must be string of length 32");
+        }
         this.key = key;
-        this.password = password;
-        this.salt = salt;
     }
 
     public String getKey() {
         return key;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getSalt() {
-        return salt;
     }
     
 }

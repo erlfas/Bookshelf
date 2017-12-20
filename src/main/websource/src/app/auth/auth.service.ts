@@ -47,7 +47,7 @@ export class AuthenticationService {
           console.log('Fetched user: ', data.username);
           this.authenticatedUser = {
             username: data.username,
-            hashedApiKey: data.hashedApiKey,
+            apiKey: data.apiKey,
             expires: data.expires
           };
           this.router.navigate(['/login']);
@@ -69,7 +69,7 @@ export class AuthenticationService {
 
   isLoggedIn(): boolean {
     const currentUser: AuthenticatedUser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentUser != null && currentUser.hashedApiKey != null;
+    return currentUser != null && currentUser.apiKey != null;
   }
 
   getLogInStatus() {

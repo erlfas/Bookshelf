@@ -1,5 +1,5 @@
 export interface AuthenticatedUser {
     username: string,
-    hashedApiKey: string,
+    apiKey: string,
     expires: string
 }

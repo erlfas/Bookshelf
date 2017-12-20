@@ -6,12 +6,12 @@ import java.util.Date;
 public class AuthenticatedUser implements Serializable {
     
     private final String username;
-    private final String hashedApiKey;
+    private final String apiKey;
     private final Date expires;
 
-    public AuthenticatedUser(String username, String hashedApiKey, Date expires) {
+    public AuthenticatedUser(String username, String apiKey, Date expires) {
         this.username = username;
-        this.hashedApiKey = hashedApiKey;
+        this.apiKey = apiKey;
         this.expires = expires;
     }
 
@@ -19,8 +19,8 @@ public class AuthenticatedUser implements Serializable {
         return username;
     }
 
-    public String getHashedApiKey() {
-        return hashedApiKey;
+    public String getApiKey() {
+        return apiKey;
     }
 
     public Date getExpires() {

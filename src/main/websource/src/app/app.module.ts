@@ -13,6 +13,7 @@ import { AuthGuard } from './auth/authguard';
 import { ApiKeyInterceptor } from './auth/apikeyinterceptor';
 import { AuthenticationService } from './auth/auth.service';
 import { BookshelfComponent } from './bookshelf/bookshelf.component';
+import { BookshelfService } from 'app/services/bookshelf.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -41,6 +42,7 @@ const routes: Routes = [
   providers: [
     AuthGuard,
     AuthenticationService,
+    BookshelfService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiKeyInterceptor,

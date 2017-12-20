@@ -1,5 +1,6 @@
 package no.fasmer.bookshelf.dao;
 
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -15,16 +16,22 @@ public class BookshelfDao extends AbstractDao<Bookshelf> {
         super(Bookshelf.class);
     }
     
-    public boolean userHasBookshelf(Long userId, String title) {
-        final Bookshelf bookshelf = getBookshelf(userId, title);
+    public boolean userHasBookshelf(String username, String title) {
+        final Bookshelf bookshelf = getBookshelf(username, title);
         return bookshelf != null;
     }
     
-    public Bookshelf getBookshelf(Long userId, String title) {
-        return (Bookshelf) em.createNamedQuery("getBookshelf")
-                .setParameter("userId", userId)
-                .setParameter("title", title)
-                .getSingleResult();
+    public Bookshelf getBookshelf(String username, String title) {
+        final List<Bookshelf> results = em.createNamedQuery("getBookshelfByUsernameAndTitle")
+                .setParameter("u", username)
+                .setParameter("t", title)
+                .getResultList();
+        
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        
+        return null;
     }
     
 }

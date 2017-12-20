@@ -55,13 +55,13 @@ public class ApiKeyBean {
         if (apiKey.getExpires().before(Date.from(Instant.now()))) {
             apiKeyDao.remove(apiKey);
 
-            final ApiKey newApiKey = generateAndSaveNewApiKey(bookshelfUser);
-            if (newApiKey != null) {
-                return new AuthenticatedUser(username, newApiKey.getApiKey(), newApiKey.getExpires());
+            final AuthenticatedUser authenticatedUser = generateAndSaveNewApiKey(bookshelfUser);
+            if (authenticatedUser != null) {
+                return authenticatedUser;
             }
         }
 
-        return new AuthenticatedUser(username, hashedPassword, apiKey.getExpires());
+        return new AuthenticatedUser(username, apiKey.getApiKey(), apiKey.getExpires());
     }
 
     public AuthenticatedUser issueUserToken(String username) {
@@ -75,15 +75,15 @@ public class ApiKeyBean {
             throw new IllegalArgumentException("Invalid username");
         }
 
-        final ApiKey newApiKey = generateAndSaveNewApiKey(bookshelfUser);
-        if (newApiKey != null) {
-            return new AuthenticatedUser(username, newApiKey.getApiKey(), newApiKey.getExpires());
+        final AuthenticatedUser authenticatedUser = generateAndSaveNewApiKey(bookshelfUser);
+        if (authenticatedUser != null) {
+            return authenticatedUser;
         }
 
         throw new IllegalStateException("Could not create API key.");
     }
 
-    public ApiKey generateAndSaveNewApiKey(BookshelfUser bookshelfUser) {
+    public AuthenticatedUser generateAndSaveNewApiKey(BookshelfUser bookshelfUser) {
         int i = 0;
         while (i < 10) {
             final KeyBundle apiKeyBundle = KeyGenerator.generate();
@@ -100,8 +100,8 @@ public class ApiKeyBean {
                 newApiKey.setBookshelfUser(bookshelfUser);
 
                 apiKeyDao.persist(newApiKey);
-
-                return newApiKey;
+                
+                return new AuthenticatedUser(bookshelfUser.getUsername(), apiKeyBundle.getKey(), expiresDate);
             }
             i++;
         }
@@ -115,13 +115,7 @@ public class ApiKeyBean {
             return false;
         }
 
-        if (apiKeyStr.length() != 32) {
-            return false;
-        }
-
-        final KeyBundle keyBundle = KeyGenerator.extract(apiKeyStr);
-        final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
-        final ApiKey apiKey = apiKeyDao.find(hashedPassword);
+        final ApiKey apiKey = apiKeyDao.find(KeyGenerator.getBundle(apiKeyStr).getKey());
 
         if (apiKey == null) {
             return false;
@@ -142,13 +136,7 @@ public class ApiKeyBean {
             return false;
         }
 
-        if (apiKeyStr.length() != 32) {
-            return false;
-        }
-
-        final KeyBundle keyBundle = KeyGenerator.extract(apiKeyStr);
-        final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
-        final ApiKey apiKey = apiKeyDao.find(hashedPassword);
+        final ApiKey apiKey = apiKeyDao.find(KeyGenerator.getBundle(apiKeyStr).getKey());
 
         if (apiKey == null) {
             return false;
@@ -171,13 +159,7 @@ public class ApiKeyBean {
             return false;
         }
 
-        if (apiKeyStr.length() != 32) {
-            return false;
-        }
-
-        final KeyBundle keyBundle = KeyGenerator.extract(apiKeyStr);
-        final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
-        final ApiKey apiKey = apiKeyDao.find(hashedPassword);
+        final ApiKey apiKey = apiKeyDao.find(KeyGenerator.getBundle(apiKeyStr).getKey());
 
         if (apiKey == null) {
             return false;
@@ -192,13 +174,7 @@ public class ApiKeyBean {
             return null;
         }
 
-        if (apiKeyStr.length() != 32) {
-            return null;
-        }
-
-        final KeyBundle keyBundle = KeyGenerator.extract(apiKeyStr);
-        final String hashedPassword = PasswordHashGenerator.generate(keyBundle.getPassword(), keyBundle.getSalt());
-        final ApiKey apiKey = apiKeyDao.find(hashedPassword);
+        final ApiKey apiKey = apiKeyDao.find(apiKeyStr);
 
         if (apiKey == null) {
             return null;

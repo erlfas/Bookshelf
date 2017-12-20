@@ -27,8 +27,38 @@ public class BookshelfBean {
     @Inject
     private Logger logger;
     
-    public RestStatus addBookToBookshelf(Long bookshelfId, String isbn13) {
-        if (bookshelfId == null) {
+    public RestStatus addBookToBookshelf(String title, String username, Book book) {
+        if (StringUtils.isBlank(title)) {
+            return RestStatus.INVALID_INPUT;
+        }
+        
+        if (StringUtils.isBlank(username)) {
+            return RestStatus.INVALID_INPUT;
+        }
+        
+        if (book == null) {
+            return RestStatus.INVALID_INPUT;
+        }
+        
+        final Bookshelf bookshelf = bookshelfDao.getBookshelf(username, title);
+        
+        if (bookshelf == null) {
+            return RestStatus.NOT_FOUND;
+        }
+        
+        bookshelf.getBooks().add(book);
+        
+        bookshelfDao.persist(bookshelf);
+        
+        return RestStatus.CREATED;
+    }
+    
+    public RestStatus addBookToBookshelf(String title, String username, String isbn13) {
+        if (StringUtils.isBlank(title)) {
+            return RestStatus.INVALID_INPUT;
+        }
+        
+        if (StringUtils.isBlank(username)) {
             return RestStatus.INVALID_INPUT;
         }
         
@@ -36,7 +66,7 @@ public class BookshelfBean {
             return RestStatus.INVALID_INPUT;
         }
         
-        final Bookshelf bookshelf = bookshelfDao.find(bookshelfId);
+        final Bookshelf bookshelf = bookshelfDao.getBookshelf(username, title);
         
         if (bookshelf == null) {
             return RestStatus.NOT_FOUND;
@@ -63,8 +93,8 @@ public class BookshelfBean {
         return bookshelfDao.find(bookshelfId);
     }
     
-    public Bookshelf getBookshelf(Long userId, String title) {
-        if (userId == null) {
+    public Bookshelf getBookshelf(String username, String title) {
+        if (StringUtils.isBlank(username)) {
             return null;
         }
         
@@ -72,11 +102,11 @@ public class BookshelfBean {
             return null;
         }
         
-        return bookshelfDao.getBookshelf(userId, title);
+        return bookshelfDao.getBookshelf(username, title);
     }
     
-    public RestStatus registerBookshelf(Long userId, String title) {
-        if (userId == null) {
+    public RestStatus addBookshelf(String username, String title) {
+        if (username == null) {
             return RestStatus.INVALID_INPUT;
         }
         
@@ -84,13 +114,13 @@ public class BookshelfBean {
             return RestStatus.INVALID_INPUT;
         }
         
-        final BookshelfUser bookshelfUser = bookshelfUserDao.find(userId);
+        final BookshelfUser bookshelfUser = bookshelfUserDao.findByUsername(username);
         
         if (bookshelfUser == null) {
             return RestStatus.NOT_FOUND;
         }
         
-        final boolean userHasBookshelf = bookshelfDao.userHasBookshelf(userId, title);
+        final boolean userHasBookshelf = bookshelfDao.userHasBookshelf(username, title);
         
         if (userHasBookshelf) {
             return RestStatus.CONFLICT;
