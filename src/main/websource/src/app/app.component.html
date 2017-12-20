@@ -7,7 +7,9 @@
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="#" [routerLink]="['/home']">Home</a>
       <a class="nav-item nav-link" href="#" [routerLink]="['/register']">Register</a>
-      <a class="nav-item nav-link" href="#" [routerLink]="['/login']">Login</a>
+      <a class="nav-item nav-link" href="#" [routerLink]="['/login']">Log in</a>
+      <a class="nav-item nav-link" href="#" [routerLink]="['/logout']">Log out</a>
+      <a class="nav-item nav-link" href="#" [routerLink]="['/bookshelf']">Bookshelf</a>
     </div>
   </div>
 </nav>
@@ -15,6 +17,7 @@
 <div class="jumbotron">
   <div class="container">
     <h1 class="display-3">{{title}}</h1>
+    {{ getLogInStatus() }}
   </div>
 </div>
 

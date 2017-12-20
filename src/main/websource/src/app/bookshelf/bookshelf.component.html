@@ -1,3 +1,10 @@
-<p>
-  bookshelf works!
-</p>
+<h2>Add a new bookshelf</h2>
+<form [formGroup]="bookshelfForm" (ngSubmit)="onSubmit()">
+  <div class="form-group row">
+    <label for="title" class="col-sm-2 col-form-label">Title</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="title" placeholder="Title" [formControl]="bookshelfForm.controls['title']">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>

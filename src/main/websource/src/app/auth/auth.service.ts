@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { AuthenticatedUser } from '../models/authenticateduser.model';
-import { UserPassword } from '../models/userpwd.model';
 import { User } from '../models/user.model';
 
 @Injectable()
@@ -65,5 +64,21 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    this.router.navigate(['/home']);
   }
+
+  isLoggedIn(): boolean {
+    const currentUser: AuthenticatedUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser != null && currentUser.hashedApiKey != null;
+  }
+
+  getLogInStatus() {
+    const authUser: AuthenticatedUser = this.getAuthenticatedUser();
+    if (authUser != null) {
+      return `You are currently logged in as ${authUser.username}.`;
+    } else {
+      return `You are currently not logged in.`;
+    }
+  }
+
 }

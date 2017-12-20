@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-bookshelf',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookshelfComponent implements OnInit {
 
-  constructor() { }
+  bookshelfForm: FormGroup;
 
-  ngOnInit() {
-  }
+    constructor(private formBuilder: FormBuilder) {}
+
+    ngOnInit() {
+      this.bookshelfForm = this.formBuilder.group({
+        title: ['', Validators.required]
+      });
+    }
+
+    onSubmit() {
+
+    }
 
 }
