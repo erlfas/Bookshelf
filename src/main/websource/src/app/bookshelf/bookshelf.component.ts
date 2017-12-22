@@ -12,6 +12,7 @@ import { AuthenticatedUser } from 'app/models/authenticateduser.model';
 })
 export class BookshelfComponent implements OnInit {
   bookshelfForm: FormGroup;
+  bookshelves: Array<Bookshelf>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,14 +23,37 @@ export class BookshelfComponent implements OnInit {
     this.bookshelfForm = this.formBuilder.group({
       title: ['', Validators.required]
     });
+    this.bookshelves = [];
+
+    const authUser: AuthenticatedUser = this.authService.getAuthenticatedUser();
+
+    if (authUser != null && authUser.username != null) {
+      this.bookshelfService
+        .getAllBookshelves(authUser.username)
+        .subscribe(data => {
+          console.log('BookshelfComponent: ngOnInit: setting ', JSON.stringify(data));
+          this.bookshelves = data.bookshelves;
+        });
+    } else {
+      console.log('BookshelfComponent: ngOnInit: found no authUser ');
+    }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const authUser: AuthenticatedUser = this.authService.getAuthenticatedUser();
     if (authUser == null) {
-
+      console.log('BookshelfComponent: onSubmit: could not find authUser');
+      return;
     }
 
-    this.bookshelfService.addBookshelf(this.bookshelfForm.controls['title'].value, authUser.username);
+    this.bookshelfService
+      .addBookshelf(this.bookshelfForm.controls['title'].value, authUser.username)
+      .subscribe(data => {
+        if (data != null && data.ok) {
+          const newBookshelfUri = data.headers.get('Location');
+          console.log('BookshelfComponent: onSubmit: pushing ', JSON.stringify(data));
+          this.bookshelves.push(new Bookshelf(this.bookshelfForm.controls['title'].value, authUser.username, [], newBookshelfUri));
+        }
+      });
   }
 }

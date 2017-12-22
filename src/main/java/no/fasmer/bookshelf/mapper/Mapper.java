@@ -7,12 +7,29 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.entity.SecurityLevel;
 import no.fasmer.bookshelf.model.User;
 import no.fasmer.bookshelf.utils.PasswordHashGenerator;
 
 public class Mapper {
+    
+    public static no.fasmer.bookshelf.model.Bookshelves map(List<Bookshelf> bookshelves, String url) {
+        final no.fasmer.bookshelf.model.Bookshelves swaggerBookshelves = new no.fasmer.bookshelf.model.Bookshelves();
+        final List<no.fasmer.bookshelf.model.Bookshelf> swaggerBookshelfList = new ArrayList<>();
+        for (Bookshelf bookshelf : bookshelves) {
+            final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
+            //swaggerBookshelf.setBooks(bookshelf.getBooks() != null ? bookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()) : new ArrayList<>());
+            swaggerBookshelf.setTitle(bookshelf.getTitle());
+            swaggerBookshelf.setUsername(bookshelf.getBookshelfUser().getUsername());
+            swaggerBookshelf.setUrl(String.format(url, bookshelf.getTitle(), bookshelf.getBookshelfUser().getUsername()));
+            swaggerBookshelfList.add(swaggerBookshelf);
+        }
+        swaggerBookshelves.setBookshelves(swaggerBookshelfList);
+        
+        return swaggerBookshelves;
+    }
     
     public static no.fasmer.bookshelf.model.AuthenticatedUser mapAuthenticatedUser(no.fasmer.bookshelf.rest.dto.AuthenticatedUser authenticatedUserDto) {
         final no.fasmer.bookshelf.model.AuthenticatedUser authenticatedUser = new no.fasmer.bookshelf.model.AuthenticatedUser();
@@ -46,11 +63,12 @@ public class Mapper {
         return bookshelfUser;
     }
     
-    public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf) {
+    public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf, String url) {
         final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
         swaggerBookshelf.setBooks(jpaBookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()));
         swaggerBookshelf.setUsername(jpaBookshelf.getBookshelfUser().getUsername());
         swaggerBookshelf.setTitle(jpaBookshelf.getTitle());
+        swaggerBookshelf.setUrl(url);
         
         return swaggerBookshelf;
     }

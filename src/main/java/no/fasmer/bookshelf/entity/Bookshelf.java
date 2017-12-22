@@ -26,6 +26,10 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
             name = "getBookshelfByUsernameAndTitle",
             query = "SELECT b FROM Bookshelf b WHERE b.bookshelfUser.username = :u AND b.title = :t"
+    ),
+    @NamedQuery(
+            name = "getAllBookshelvesByUsername",
+            query = "SELECT b FROM Bookshelf b WHERE b.bookshelfUser.username = :u"
     )
 })
 public class Bookshelf implements Serializable {

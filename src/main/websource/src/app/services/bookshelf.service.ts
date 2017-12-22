@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Bookshelf } from 'app/models/bookshelf.model';
+import { Bookshelves } from 'app/models/bookshelves.model';
 
 @Injectable()
 export class BookshelfService {
@@ -12,7 +13,14 @@ export class BookshelfService {
         private http: HttpClient,
         private router: Router) {}
 
-    addBookshelf(_title: string, _username: string) {
+    getAllBookshelves(_username: string): Observable<Bookshelves> {
+        const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/all?username=${_username}`;
+        const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+        return this.http.get<Bookshelves>(url, {headers: header});
+    }
+
+    addBookshelf(_title: string, _username: string): Observable<HttpResponse<Object>> {
         const url = `http://localhost:8080/Bookshelf/webresources/bookshelf`;
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         const body = {
@@ -21,22 +29,7 @@ export class BookshelfService {
         };
 
         // https://angular.io/guide/http#reading-the-full-response
-        this.http
-            .post(url, JSON.stringify(body), {
-                headers: header,
-                observe: 'response'
-            })
-            .subscribe(
-                data => {
-                    console.log('addBookshelf: Status: ', data);
-                },
-                err => {
-                    console.log('addBookshelf: Error: ', err);
-                },
-                () => {
-                    console.log('addBookshelf: done');
-                }
-            );
+        return this.http.post(url, JSON.stringify(body), {headers: header, observe: 'response'});
     }
 
 }

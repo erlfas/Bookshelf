@@ -1,10 +1,20 @@
-<h2>Add a new bookshelf</h2>
-<form [formGroup]="bookshelfForm" (ngSubmit)="onSubmit()">
-  <div class="form-group row">
-    <label for="title" class="col-sm-2 col-form-label">Title</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="title" placeholder="Title" [formControl]="bookshelfForm.controls['title']">
+<div>
+  <h2>Add a new bookshelf</h2>
+  <form [formGroup]="bookshelfForm" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="title" class="col-sm-2 col-form-label">Title</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="title" placeholder="Title" [formControl]="bookshelfForm.controls['title']">
+      </div>
     </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
+<div style="margin-top: 30px">
+  <h2>Your bookshelves</h2>
+  <div class="list-group" *ngFor="let b of bookshelves">
+    <a [href]="b.url" class="list-group-item list-group-item-action">
+      {{ b.title }}
+    </a>
   </div>
-  <button type="submit" class="btn btn-primary">Add</button>
-</form>
+</div>

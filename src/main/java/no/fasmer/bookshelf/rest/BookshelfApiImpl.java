@@ -1,5 +1,7 @@
 package no.fasmer.bookshelf.rest;
 
+import java.net.URI;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -93,10 +95,14 @@ public class BookshelfApiImpl implements BookshelfApi {
         }
 
         final RestStatus restStatus = bookshelfBean.addBookshelf(bookshelfToAdd.getUsername(), bookshelfToAdd.getTitle());
-
-        return Response
-                .status(restStatus.getCode())
+        
+        if (restStatus == RestStatus.CREATED) {
+            return Response
+                .created(URI.create(String.format("/bookshelf?title=%s&username=%s", bookshelfToAdd.getTitle(), bookshelfToAdd.getUsername())))
                 .build();
+        }
+
+        return Response.status(restStatus.getCode()).build();
     }
 
     @Override
@@ -129,7 +135,32 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        return Response.ok(Mapper.map(bookshelf)).build();
+        return Response.ok(Mapper.map(bookshelf, String.format("/bookshelf?title=%s&username=%s", title, username))).build();
+    }
+
+    @Override
+    public Response getBookshelfs(String apiKey, String username, SecurityContext securityContext) {
+        if (StringUtils.isBlank(apiKey)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        if (StringUtils.isBlank(username)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        final BookshelfUser bookshelfUser = apiKeyBean.getBookshelfUser(apiKey);
+        
+        if (bookshelfUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
+        if (!bookshelfUser.getUsername().equals(username)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
+        final List<Bookshelf> bookshelves = bookshelfBean.getAllBookshelves(username);
+        
+        return Response.ok(Mapper.map(bookshelves, "/bookshelf?title=%s&username=%s")).build();
     }
 
 }

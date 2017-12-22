@@ -141,8 +141,40 @@ paths:
       responses:
         201:
           description: "created bookshelf"
+          schema:
+            $ref: "#/definitions/Bookshelf"
         404:
           description: "Invalid bookshelfUserId"
+      security:
+        - UserSecurity: []
+  /bookshelf/all:
+    get:
+      tags:
+      - "bookshelf"
+      summary: "Get all bookshelves"
+      description: "Get all bookshelves"
+      operationId: "getBookshelfs"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - in: query
+        name: username
+        type: string
+        description: The username of the user of the bookshelf
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Bookshelves"
+        404:
+          description: "Invalid bookshelfId"
       security:
         - UserSecurity: []
   /bookshelf/addbook:
@@ -339,6 +371,13 @@ security:
   - UserSecurity: [] 
   - AdminSecurity: []
 definitions:
+  Bookshelves:
+    type: object
+    properties:
+      bookshelves:
+        type: array
+        items:
+          $ref: "#/definitions/Bookshelf"
   Bookshelf:
     type: object
     properties:
@@ -348,6 +387,8 @@ definitions:
       username:
         type: string
         example: john@smith.com
+      url:
+        type: string
       books:
         type: array
         items:

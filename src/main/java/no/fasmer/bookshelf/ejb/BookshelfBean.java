@@ -1,5 +1,6 @@
 package no.fasmer.bookshelf.ejb;
 
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -9,6 +10,7 @@ import no.fasmer.bookshelf.dao.BookshelfUserDao;
 import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
+import no.fasmer.bookshelf.rest.dto.BookshelfResponse;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +28,10 @@ public class BookshelfBean {
     
     @Inject
     private Logger logger;
+    
+    public List<Bookshelf> getAllBookshelves(String username) {
+        return bookshelfDao.getAllBookshelvesByUsername(username);
+    }
     
     public RestStatus addBookToBookshelf(String title, String username, Book book) {
         if (StringUtils.isBlank(title)) {
