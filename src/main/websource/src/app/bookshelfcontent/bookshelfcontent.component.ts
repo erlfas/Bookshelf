@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookshelfService } from 'app/services/bookshelf.service';
 import { Bookshelf } from 'app/models/bookshelf.model';
 import { AuthenticationService } from 'app/auth/auth.service';
@@ -17,7 +16,6 @@ export class BookshelfcontentComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
     private bookshelfService: BookshelfService,
     private authService: AuthenticationService) {
 

@@ -169,4 +169,41 @@ public class BookshelfApiImpl implements BookshelfApi {
         return Response.ok(Mapper.map(bookshelves)).build();
     }
 
+    @Override
+    public Response getBookshelfById(String apiKey, String id, SecurityContext securityContext) {
+        if (StringUtils.isBlank(id)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        try {
+            Long.parseLong(id);
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        if (StringUtils.isBlank(apiKey)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        final BookshelfUser userOfApiKey = apiKeyBean.getBookshelfUser(apiKey);
+        
+        if (userOfApiKey == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        
+        final Bookshelf bookshelf = bookshelfBean.getBookshelfById(Long.parseLong(id));
+        
+        if (bookshelf == null || bookshelf.getBookshelfUser() == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        
+        final BookshelfUser userOfBookshelf = bookshelf.getBookshelfUser();
+        
+        if (!userOfBookshelf.getUsername().equals(userOfApiKey.getUsername())) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        
+        return Response.ok(Mapper.map(bookshelf)).build();
+    }
+
 }
