@@ -21,6 +21,11 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService) {}
 
   ngOnInit() {
+    const logoutUrl = this.route.snapshot.url.find(x => x.path.search('logout') > -1);
+    if (logoutUrl != null) {
+      console.log('LoginComponent: ngOnInit: used logout path: ', logoutUrl.path);
+      this.logout();
+    }
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       pwd: ['', Validators.required]

@@ -1,16 +1,24 @@
 import { Book } from './book.model';
 
 export class Bookshelf {
+    _id: string;
     _title: string;
     _username: string;
-    _books: Array<Book>;
-    _url: string;
+    _books: Array<string>;
 
-    constructor(title: string, username: string, books: Array<Book>, url: string) {
+    constructor(id: string, title: string, username: string, books: Array<string>) {
+        this._id = id;
         this._title = title;
         this._username = username;
         this._books = books;
-        this._url = url;
+    }
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(v: string) {
+        this._id = v;
     }
 
     get title(): string {
@@ -29,20 +37,12 @@ export class Bookshelf {
         this._username = v;
     }
 
-    get books(): Array<Book> {
+    get books(): Array<string> {
         return this._books;
     }
 
-    set books(v: Array<Book>) {
+    set books(v: Array<string>) {
         this._books = v;
-    }
-
-    get url(): string {
-        return this._url;
-    }
-
-    set url(v: string) {
-        this._url = v;
     }
 
 }

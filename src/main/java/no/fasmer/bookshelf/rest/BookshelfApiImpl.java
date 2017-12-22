@@ -15,7 +15,9 @@ import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.mapper.Mapper;
 import no.fasmer.bookshelf.model.BookToAdd;
 import no.fasmer.bookshelf.model.BookshelfToAdd;
+import no.fasmer.bookshelf.rest.dto.BookshelfResponse;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
+import no.fasmer.bookshelf.utils.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 public class BookshelfApiImpl implements BookshelfApi {
@@ -61,9 +63,15 @@ public class BookshelfApiImpl implements BookshelfApi {
         
         final no.fasmer.bookshelf.entity.Book book = Mapper.map(bookToAdd.getBook());
         
-        final RestStatus restStatus = bookshelfBean.addBookToBookshelf(bookToAdd.getUsername(), bookToAdd.getBookshelfTitle(), book);
+        final BookshelfResponse bookshelfResponse = bookshelfBean.addBookToBookshelf(bookToAdd.getUsername(), bookToAdd.getBookshelfTitle(), book);
+        
+        if (bookshelfResponse.getRestStatus() == RestStatus.CREATED) {
+            return Response
+                .created(URI.create(Getter.getBookshelfUrl(bookshelfResponse.getBookshelf())))
+                .build();
+        }
 
-        return Response.status(restStatus.getCode()).build();
+        return Response.status(bookshelfResponse.getRestStatus().getCode()).build();
     }
 
     @Override
@@ -94,15 +102,13 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        final RestStatus restStatus = bookshelfBean.addBookshelf(bookshelfToAdd.getUsername(), bookshelfToAdd.getTitle());
+        final BookshelfResponse bookshelfResponse = bookshelfBean.addBookshelf(bookshelfToAdd.getUsername(), bookshelfToAdd.getTitle());
         
-        if (restStatus == RestStatus.CREATED) {
-            return Response
-                .created(URI.create(String.format("/bookshelf?title=%s&username=%s", bookshelfToAdd.getTitle(), bookshelfToAdd.getUsername())))
-                .build();
+        if (bookshelfResponse.getRestStatus() == RestStatus.CREATED) {
+            return Response.ok(Mapper.map(bookshelfResponse.getBookshelf())).build();
         }
 
-        return Response.status(restStatus.getCode()).build();
+        return Response.status(bookshelfResponse.getRestStatus().getCode()).build();
     }
 
     @Override
@@ -135,7 +141,7 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        return Response.ok(Mapper.map(bookshelf, String.format("/bookshelf?title=%s&username=%s", title, username))).build();
+        return Response.ok(Mapper.map(bookshelf)).build();
     }
 
     @Override
@@ -160,7 +166,7 @@ public class BookshelfApiImpl implements BookshelfApi {
         
         final List<Bookshelf> bookshelves = bookshelfBean.getAllBookshelves(username);
         
-        return Response.ok(Mapper.map(bookshelves, "/bookshelf?title=%s&username=%s")).build();
+        return Response.ok(Mapper.map(bookshelves)).build();
     }
 
 }

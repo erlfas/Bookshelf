@@ -48,11 +48,11 @@ export class BookshelfComponent implements OnInit {
 
     this.bookshelfService
       .addBookshelf(this.bookshelfForm.controls['title'].value, authUser.username)
-      .subscribe(data => {
-        if (data != null && data.ok) {
-          const newBookshelfUri = data.headers.get('Location');
-          console.log('BookshelfComponent: onSubmit: pushing ', JSON.stringify(data));
-          this.bookshelves.push(new Bookshelf(this.bookshelfForm.controls['title'].value, authUser.username, [], newBookshelfUri));
+      .subscribe(savedBookshelf => {
+        if (savedBookshelf != null) {
+          // const newBookshelf = new Bookshelf(this.bookshelfForm.controls['title'].value, authUser.username, [], newBookshelfUri);
+          console.log('BookshelfComponent: onSubmit: pushing ', JSON.stringify(savedBookshelf));
+          this.bookshelves.push(savedBookshelf);
         }
       });
   }

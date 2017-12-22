@@ -14,13 +14,16 @@ import { ApiKeyInterceptor } from './auth/apikeyinterceptor';
 import { AuthenticationService } from './auth/auth.service';
 import { BookshelfComponent } from './bookshelf/bookshelf.component';
 import { BookshelfService } from 'app/services/bookshelf.service';
+import { BookshelfcontentComponent } from './bookshelfcontent/bookshelfcontent.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'bookshelf', component: BookshelfComponent, canActivate: [AuthGuard]}
+  { path: 'logout', component: LoginComponent },
+  { path: 'bookshelf', component: BookshelfComponent, canActivate: [AuthGuard]},
+  { path: 'bookshelfcontent/:id', component: BookshelfcontentComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
@@ -29,7 +32,8 @@ const routes: Routes = [
     LoginComponent,
     HomeComponent,
     RegisterComponent,
-    BookshelfComponent
+    BookshelfComponent,
+    BookshelfcontentComponent
   ],
   imports: [
     BrowserModule,

@@ -229,8 +229,10 @@ paths:
         schema:
           $ref: "#/definitions/Book"
       responses:
-        201:
+        200:
           description: "Created"
+          schema:
+            $ref: "#/definitions/Bookshelf"
         405:
           description: "Invalid input"
       security:
@@ -381,14 +383,15 @@ definitions:
   Bookshelf:
     type: object
     properties:
+      id:
+        type: string
+        example: 1
       title:
         type: string
         example: Fiction
       username:
         type: string
         example: john@smith.com
-      url:
-        type: string
       books:
         type: array
         items:

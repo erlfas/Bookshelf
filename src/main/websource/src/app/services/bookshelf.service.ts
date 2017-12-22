@@ -20,7 +20,7 @@ export class BookshelfService {
         return this.http.get<Bookshelves>(url, {headers: header});
     }
 
-    addBookshelf(_title: string, _username: string): Observable<HttpResponse<Object>> {
+    addBookshelf(_title: string, _username: string): Observable<Bookshelf> {
         const url = `http://localhost:8080/Bookshelf/webresources/bookshelf`;
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         const body = {
@@ -29,7 +29,7 @@ export class BookshelfService {
         };
 
         // https://angular.io/guide/http#reading-the-full-response
-        return this.http.post(url, JSON.stringify(body), {headers: header, observe: 'response'});
+        return this.http.post<Bookshelf>(url, JSON.stringify(body), {headers: header});
     }
 
 }
