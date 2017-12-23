@@ -10,6 +10,7 @@ import javax.ws.rs.core.SecurityContext;
 import no.fasmer.bookshelf.api.BookshelfApi;
 import no.fasmer.bookshelf.ejb.ApiKeyBean;
 import no.fasmer.bookshelf.ejb.BookshelfBean;
+import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.mapper.Mapper;
@@ -196,6 +197,8 @@ public class BookshelfApiImpl implements BookshelfApi {
         if (bookshelf == null || bookshelf.getBookshelfUser() == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        
+        bookshelf.getBooks(); // eager loading
         
         final BookshelfUser userOfBookshelf = bookshelf.getBookshelfUser();
         

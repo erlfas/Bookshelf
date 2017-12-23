@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.entity.SecurityLevel;
@@ -18,16 +19,7 @@ public class Mapper {
     
     public static no.fasmer.bookshelf.model.Bookshelves map(List<Bookshelf> bookshelves) {
         final no.fasmer.bookshelf.model.Bookshelves swaggerBookshelves = new no.fasmer.bookshelf.model.Bookshelves();
-        final List<no.fasmer.bookshelf.model.Bookshelf> swaggerBookshelfList = new ArrayList<>();
-        for (Bookshelf bookshelf : bookshelves) {
-            final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
-            //swaggerBookshelf.setBooks(bookshelf.getBooks() != null ? bookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()) : new ArrayList<>());
-            swaggerBookshelf.setTitle(bookshelf.getTitle());
-            swaggerBookshelf.setUsername(bookshelf.getBookshelfUser().getUsername());
-            swaggerBookshelf.setId(Getter.getBookshelfId(bookshelf));
-            swaggerBookshelfList.add(swaggerBookshelf);
-        }
-        swaggerBookshelves.setBookshelves(swaggerBookshelfList);
+        swaggerBookshelves.setBookshelves(bookshelves.stream().map(Mapper::map).collect(Collectors.toList()));
         
         return swaggerBookshelves;
     }
@@ -67,7 +59,7 @@ public class Mapper {
     public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf) {
         final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
         swaggerBookshelf.setId(Getter.getBookshelfId(jpaBookshelf));
-        swaggerBookshelf.setBooks(jpaBookshelf.getBooks().stream().map(x -> x.getIsbn13()).collect(Collectors.toList()));
+        swaggerBookshelf.setBooks(jpaBookshelf.getBooks().stream().map(Mapper::map).collect(Collectors.toList()));
         swaggerBookshelf.setUsername(jpaBookshelf.getBookshelfUser().getUsername());
         swaggerBookshelf.setTitle(jpaBookshelf.getTitle());
         

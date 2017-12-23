@@ -425,7 +425,7 @@ definitions:
       books:
         type: array
         items:
-          type: string
+          $ref:  "#/definitions/Book"
   BookshelfToAdd:
     type: object
     properties:

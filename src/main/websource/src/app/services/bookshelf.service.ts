@@ -13,6 +13,14 @@ export class BookshelfService {
         private http: HttpClient,
         private router: Router) {}
 
+    getBookshelf(id: string): Observable<Bookshelf> {
+        const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/id/${id}`;
+        const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+        // https://angular.io/guide/http#reading-the-full-response
+        return this.http.get<Bookshelf>(url, {headers: header});
+    }
+
     getAllBookshelves(_username: string): Observable<Bookshelves> {
         const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/all?username=${_username}`;
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});

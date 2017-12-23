@@ -4,9 +4,9 @@ export class Bookshelf {
     _id: string;
     _title: string;
     _username: string;
-    _books: Array<string>;
+    _books: Array<Book>;
 
-    constructor(id: string, title: string, username: string, books: Array<string>) {
+    constructor(id: string, title: string, username: string, books: Array<Book>) {
         this._id = id;
         this._title = title;
         this._username = username;
@@ -37,11 +37,11 @@ export class Bookshelf {
         this._username = v;
     }
 
-    get books(): Array<string> {
+    get books(): Array<Book> {
         return this._books;
     }
 
-    set books(v: Array<string>) {
+    set books(v: Array<Book>) {
         this._books = v;
     }
 

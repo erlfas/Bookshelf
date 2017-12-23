@@ -5,16 +5,21 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
-import { AuthGuard } from './auth/authguard';
-import { ApiKeyInterceptor } from './auth/apikeyinterceptor';
-import { AuthenticationService } from './auth/auth.service';
-import { BookshelfComponent } from './bookshelf/bookshelf.component';
+import { AppComponent } from 'app/app.component';
+import { LoginComponent } from 'app/login/login.component';
+import { HomeComponent } from 'app/home/home.component';
+import { RegisterComponent } from 'app/register/register.component';
+import { AuthGuard } from 'app/auth/authguard';
+import { ApiKeyInterceptor } from 'app/auth/apikeyinterceptor';
+import { AuthenticationService } from 'app/auth/auth.service';
+import { BookshelfComponent } from 'app/bookshelf/bookshelf.component';
 import { BookshelfService } from 'app/services/bookshelf.service';
-import { BookshelfcontentComponent } from './bookshelfcontent/bookshelfcontent.component';
+import { BookshelfcontentComponent } from 'app/bookshelfcontent/bookshelfcontent.component';
+import { DynamicFormModule } from 'app/dynamic-form/dynamic-form.module';
+import { FormInputComponent } from 'app/dynamic-form/components/form-input/form-input.component';
+import { FormSelectComponent } from 'app/dynamic-form/components/form-select/form-select.component';
+import { FormButtonComponent } from 'app/dynamic-form/components/form-button/form-button.component';
+import { DynamicFieldDirective } from 'app/dynamic-form/components/dynamic-field/dynamic-field.directive';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -41,7 +46,8 @@ const routes: Routes = [
     HttpModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    DynamicFormModule
   ],
   providers: [
     AuthGuard,
