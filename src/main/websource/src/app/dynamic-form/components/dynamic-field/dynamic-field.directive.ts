@@ -12,7 +12,6 @@ const components: {[type: string]: Type<Field>} = {
   select: FormSelectComponent
 };
 
-
 @Directive({
   selector: '[appDynamicField]'
 })
