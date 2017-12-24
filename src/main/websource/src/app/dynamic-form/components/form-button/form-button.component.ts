@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Field } from 'app/dynamic-form/models/field.interface';
+import { FieldConfig } from 'app/dynamic-form/models/field-config.interface';
 
 @Component({
   selector: 'app-form-button',
@@ -9,7 +10,7 @@ import { Field } from 'app/dynamic-form/models/field.interface';
 })
 export class FormButtonComponent implements Field {
 
-  config;
+  config: FieldConfig;
   group: FormGroup;
 
 }

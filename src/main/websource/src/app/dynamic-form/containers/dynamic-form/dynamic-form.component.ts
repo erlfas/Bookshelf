@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { FieldConfig } from 'app/dynamic-form/models/field-config.interface';
+import { ConfigurationContainer } from 'app/dynamic-form/models/configcontainer';
 
 @Component({
   exportAs: 'dynamicForm',
@@ -14,7 +15,9 @@ export class DynamicFormComponent implements OnChanges, OnInit {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+    console.log('DynamicFormComponent: constructor');
+  }
 
   get controls() {
     return this.config.filter(({ type }) => type !== 'button');
@@ -33,6 +36,7 @@ export class DynamicFormComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
+    console.log('DynamicFormComponent: ngOnInit');
     this.form = this.createGroup();
   }
 
@@ -55,7 +59,7 @@ export class DynamicFormComponent implements OnChanges, OnInit {
   }
 
   createGroup() {
-    const group = this.fb.group({});
+    const group = this.formBuilder.group({});
     this.config.forEach(control =>
       group.addControl(control.name, this.createControl(control))
     );
@@ -64,7 +68,7 @@ export class DynamicFormComponent implements OnChanges, OnInit {
 
   createControl(config: FieldConfig) {
     const { disabled, validation, value } = config;
-    return this.fb.control({disabled, value}, validation);
+    return this.formBuilder.control({disabled, value}, validation);
   }
 
   handleSubmit(event: Event) {

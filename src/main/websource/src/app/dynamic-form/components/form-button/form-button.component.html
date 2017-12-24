@@ -1,7 +1,7 @@
 <div class="appDynamicField app-form-button" [formGroup]="group">
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">
+      <button [attr.type]="config.inputType" [attr.class]="config.class" (click)="config.clickFunc()">
         {{ config.label }}
       </button>
     </div>

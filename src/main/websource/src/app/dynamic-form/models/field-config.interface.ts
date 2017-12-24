@@ -1,14 +1,20 @@
 import { ValidatorFn } from '@angular/forms';
+import { AddInputField } from 'app/dynamic-form/models/addinput.interface';
 
 export interface FieldConfig {
-  disabled?: boolean;
-  label?: string;
+  id: string;
   name: string;
+  type: string;
+  order: number;
   options?: string[];
   placeholder?: string;
-  type: string;
+  disabled?: boolean;
+  label?: string;
   validation?: ValidatorFn[];
   value?: any;
   inputType?: string;
+  class?: string;
+  clickFunc?: AddInputField;
+  index?: number;
 }
 
