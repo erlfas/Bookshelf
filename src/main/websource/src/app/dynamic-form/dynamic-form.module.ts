@@ -7,6 +7,7 @@ import { FormButtonComponent} from 'app/dynamic-form/components/form-button/form
 import { FormInputComponent } from 'app/dynamic-form/components/form-input/form-input.component';
 import { FormSelectComponent } from 'app/dynamic-form/components/form-select/form-select.component';
 
+// Credits to: https://toddmotto.com/angular-dynamic-components-forms
 @NgModule({
   imports: [
     CommonModule,

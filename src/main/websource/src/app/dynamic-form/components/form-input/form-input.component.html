@@ -1,4 +1,11 @@
-<div class="dynamic-field app-form-input" [formGroup]="group">
-  <label>{{ config.label }}</label>
-  <input type="text" [attr.placeholder]="config.placeholder" [formControlName]="config.name" />
+<div class="appDynamicField app-form-input" [formGroup]="group">
+
+  <div class="form-group row">
+    <label [attr.for]="config.name" class="col-sm-2 col-form-label"> {{ config.label }} </label>
+    <div class="col-sm-10">
+      <input [attr.type]="config.inputType" [attr.id]="config.name" class="form-control" [attr.placeholder]="config.placeholder" [formControlName]="config.name"
+        aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+  </div>
+
 </div>

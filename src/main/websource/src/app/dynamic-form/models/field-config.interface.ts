@@ -9,5 +9,6 @@ export interface FieldConfig {
   type: string;
   validation?: ValidatorFn[];
   value?: any;
+  inputType?: string;
 }
 

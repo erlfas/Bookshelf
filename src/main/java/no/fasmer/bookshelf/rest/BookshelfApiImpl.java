@@ -198,8 +198,6 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        bookshelf.getBooks(); // eager loading
-        
         final BookshelfUser userOfBookshelf = bookshelf.getBookshelfUser();
         
         if (!userOfBookshelf.getUsername().equals(userOfApiKey.getUsername())) {

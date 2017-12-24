@@ -42,7 +42,7 @@ export class DynamicFormComponent implements OnChanges, OnInit {
       const configControls = this.controls.map((item) => item.name);
 
       controls
-        .filter((control) => configControls.find(x => x === control) != null)
+        .filter((control) => configControls.find(x => x === control) !== undefined)
         .map((control) => this.form.removeControl(control));
 
       configControls

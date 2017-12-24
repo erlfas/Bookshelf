@@ -1,5 +1,9 @@
-<div class="dynamic-field app-form-button" [formGroup]="group">
-  <button type="submit">
-    {{ config.label }}
-  </button>
+<div class="appDynamicField app-form-button" [formGroup]="group">
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">
+        {{ config.label }}
+      </button>
+    </div>
+  </div>
 </div>

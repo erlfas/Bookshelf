@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -47,7 +48,7 @@ public class Bookshelf implements Serializable {
     @NotNull
     private String title;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Book> books;
 
     public Long getId() {

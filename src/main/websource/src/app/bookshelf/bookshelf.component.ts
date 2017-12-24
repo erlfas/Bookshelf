@@ -50,7 +50,6 @@ export class BookshelfComponent implements OnInit {
       .addBookshelf(this.bookshelfForm.controls['title'].value, authUser.username)
       .subscribe(savedBookshelf => {
         if (savedBookshelf != null) {
-          // const newBookshelf = new Bookshelf(this.bookshelfForm.controls['title'].value, authUser.username, [], newBookshelfUri);
           console.log('BookshelfComponent: onSubmit: pushing ', JSON.stringify(savedBookshelf));
           this.bookshelves.push(savedBookshelf);
         }
