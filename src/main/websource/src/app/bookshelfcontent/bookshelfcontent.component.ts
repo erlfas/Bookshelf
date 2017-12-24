@@ -9,6 +9,7 @@ import { FieldConfig } from 'app/dynamic-form/models/field-config.interface';
 import { DynamicFormComponent } from 'app/dynamic-form/containers/dynamic-form/dynamic-form.component';
 import { Book } from 'app/models/book.model';
 import { Spawner } from 'app/dynamic-form/models/spawner';
+import { Author } from 'app/models/author.model';
 
 @Component({
   selector: 'app-bookshelfcontent',
@@ -114,6 +115,10 @@ export class BookshelfcontentComponent implements AfterViewInit {
       class: 'btn btn-secondary',
       clickFunc: () => {
         console.log('addAuthor: clickFunc');
+        if (this.maxIsReached(this.config)) {
+          console.log('addAuthor: clickFunc: max is reached');
+          return;
+        }
         const newField: FieldConfig = Spawner.spawnInputField('author', this.config);
         this.config.push(newField);
         this.config.sort((a, b) => { return (a.order - b.order); });
@@ -155,12 +160,54 @@ export class BookshelfcontentComponent implements AfterViewInit {
     });
   }
 
+  maxIsReached(config: FieldConfig[]): boolean {
+    let count = 0;
+    for (const c of config) {
+      if (c.group === 'author') {
+        count++;
+      }
+    }
+
+    return count >= 5;
+  }
+
+  getAuthor(s: string): Author {
+    const elm = s.split(',');
+    if (elm !== null && elm.length === 2) {
+      return new Author(elm[1].trim(), elm[0].trim());
+    }
+    return null;
+  }
+
+  push(name: string, authors: Array<Author>, value: {[name: string]: any}) {
+    const val = value[name];
+    if (val !== null && val !== undefined) {
+      const author = this.getAuthor(val);
+      if (author !== null && author !== undefined) {
+        authors.push(this.getAuthor(val));
+      }
+    }
+  }
+
+  getAuthors(value: {[name: string]: any}): Array<Author> {
+    const authors: Array<Author> = new Array();
+
+    this.push('author', authors, value);
+    this.push('author2', authors, value);
+    this.push('author3', authors, value);
+    this.push('author4', authors, value);
+    this.push('author5', authors, value);
+
+    return authors;
+  }
+
   submit(value: {[name: string]: any}) {
     const book: Book = new Book(value['isbn13'], value['isbn10'], value['title'],
       value['published'], value['publisher'], value['edition'],
-      value['numPages'], null, null);
+      value['numPages'], this.getAuthors(value), null);
     console.log('BookshelfcontentComponent: submit: value: ', value);
     console.log('BookshelfcontentComponent: submit: book: ', book);
+    this.bookshelfService.addBookToBookshelf(this.id, book);
   }
 
   addAuthorField(): void {

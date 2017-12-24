@@ -63,7 +63,7 @@ public class BookApiImpl implements BookApi {
     }
 
     @Override
-    public Response updateBook(String apiKey, Book book, SecurityContext securityContext) {
+    public Response updateBook(String apiKey, String isbn13, Book book, SecurityContext securityContext) {
         if (!apiKeyBean.isValid(apiKey)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }

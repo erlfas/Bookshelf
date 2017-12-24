@@ -267,7 +267,7 @@ paths:
           description: "Invalid input"
       security:
         - UserSecurity: []
-  /book/{isbn13}:
+  /book/id/{isbn13}:
     get:
       tags:
       - "book"
@@ -277,11 +277,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "isbn13"
-        in: "path"
+      - name: isbn13
+        in: path
         description: "isbn13 of book to return"
         required: true
-        type: "string"
+        type: string
       responses:
         200:
           description: "successful operation"
@@ -306,6 +306,11 @@ paths:
       parameters:
       - name: API-KEY
         in: header
+        required: true
+        type: string
+      - name: isbn13
+        in: path
+        description: "isbn13 of book to update"
         required: true
         type: string
       - in: "body"

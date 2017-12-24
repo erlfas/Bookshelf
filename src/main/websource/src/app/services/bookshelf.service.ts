@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Bookshelf } from 'app/models/bookshelf.model';
 import { Bookshelves } from 'app/models/bookshelves.model';
+import { Book } from 'app/models/book.model';
 
 @Injectable()
 export class BookshelfService {
@@ -12,6 +13,13 @@ export class BookshelfService {
     constructor(
         private http: HttpClient,
         private router: Router) {}
+
+    addBookToBookshelf(bookshelfId: string, book: Book): Observable<HttpResponse<Object>> {
+        const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/id/${bookshelfId}`;
+        const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+        return this.http.get(url, {headers: header, observe: 'response'});
+    }
 
     getBookshelf(id: string): Observable<Bookshelf> {
         const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/id/${id}`;
