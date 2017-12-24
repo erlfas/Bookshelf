@@ -7,6 +7,7 @@ import { AuthenticatedUser } from 'app/models/authenticateduser.model';
 import { ActivatedRoute } from '@angular/router';
 import { FieldConfig } from 'app/dynamic-form/models/field-config.interface';
 import { DynamicFormComponent } from 'app/dynamic-form/containers/dynamic-form/dynamic-form.component';
+import { Book } from 'app/models/book.model';
 
 @Component({
   selector: 'app-bookshelfcontent',
@@ -117,7 +118,11 @@ export class BookshelfcontentComponent implements AfterViewInit {
   }
 
   submit(value: {[name: string]: any}) {
-    console.log(value);
+    const book: Book = new Book(value['isbn13'], value['isbn10'], value['title'],
+      value['published'], value['publisher'], value['edition'],
+      value['numPages'], null, null);
+    console.log('BookshelfcontentComponent: submit: value: ', value);
+    console.log('BookshelfcontentComponent: submit: book: ', book);
   }
 
   addAuthorField(): void {

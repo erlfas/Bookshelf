@@ -1,5 +1,20 @@
-<h2> Bookshelf: {{ bookshelf.title }} </h2>
-<h3>Add book</h3>
-<app-dynamic-form [config]="config" #form="dynamicForm" (submit)="submit($event)">
-</app-dynamic-form>
-<h3>Books</h3>
+<h2> Bookshelf: {{ bookshelf !== undefined ? bookshelf.title : '' }} </h2>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#addBook" aria-expanded="false" aria-controls="collapseExample">
+    Add a book
+</button>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#browseBooks" aria-expanded="false" aria-controls="collapseExample">
+    Browse books
+</button>
+
+<div class="collapse" id="addBook">
+    <div class="card card-body">
+        <h3>Add book</h3>
+        <app-dynamic-form [config]="config" #form="dynamicForm" (submit)="submit($event)">
+        </app-dynamic-form>
+    </div>
+</div>
+<div class="collapse" id="browseBooks">
+    <div class="card card-body">
+        <h3>Books</h3>
+    </div>
+</div>
