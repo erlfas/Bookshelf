@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { FieldConfig } from 'app/dynamic-form/models/field-config.interface';
-import { ConfigurationContainer } from 'app/dynamic-form/models/configcontainer';
+import { Spawner } from 'app/dynamic-form/models/spawner';
 
 @Component({
   exportAs: 'dynamicForm',
@@ -41,6 +41,7 @@ export class DynamicFormComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges() {
+    console.log('DynamicFormComponent: ngOnChanges');
     if (this.form) {
       const controls = Object.keys(this.form.controls);
       const configControls = this.controls.map((item) => item.name);
@@ -64,6 +65,10 @@ export class DynamicFormComponent implements OnChanges, OnInit {
       group.addControl(control.name, this.createControl(control))
     );
     return group;
+  }
+
+  addControl(config: FieldConfig) {
+    this.form.addControl(config.name, this.createControl(config));
   }
 
   createControl(config: FieldConfig) {

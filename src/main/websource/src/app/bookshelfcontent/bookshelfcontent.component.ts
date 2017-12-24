@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FieldConfig } from 'app/dynamic-form/models/field-config.interface';
 import { DynamicFormComponent } from 'app/dynamic-form/containers/dynamic-form/dynamic-form.component';
 import { Book } from 'app/models/book.model';
-import { ConfigurationContainer } from 'app/dynamic-form/models/configcontainer';
+import { Spawner } from 'app/dynamic-form/models/spawner';
 
 @Component({
   selector: 'app-bookshelfcontent',
@@ -24,7 +24,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
 
   config: FieldConfig[] = [
     {
-      id: 'isbn13',
+      group: 'isbn13',
       order: 1,
       type: 'input',
       label: 'ISBN 13',
@@ -34,7 +34,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'text'
     },
     {
-      id: 'isbn10',
+      group: 'isbn10',
       order: 2,
       type: 'input',
       label: 'ISBN 10',
@@ -44,7 +44,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'text'
     },
     {
-      id: 'title',
+      group: 'title',
       order: 3,
       type: 'input',
       label: 'Title',
@@ -54,7 +54,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'text'
     },
     {
-      id: 'published',
+      group: 'published',
       order: 4,
       type: 'input',
       label: 'Published',
@@ -64,7 +64,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'date'
     },
     {
-      id: 'publisher',
+      group: 'publisher',
       order: 5,
       type: 'input',
       label: 'Publisher',
@@ -74,7 +74,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'text'
     },
     {
-      id: 'edition',
+      group: 'edition',
       order: 6,
       type: 'input',
       label: 'Edition',
@@ -84,7 +84,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'number'
     },
     {
-      id: 'numPages',
+      group: 'numPages',
       order: 7,
       type: 'input',
       label: 'Number of pages',
@@ -94,7 +94,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'number'
     },
     {
-      id: 'author1',
+      group: 'author',
       order: 8,
       type: 'input',
       label: 'Author',
@@ -105,7 +105,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
       index: 1
     },
     {
-      id: 'addAuthor',
+      group: 'addAuthor',
       order: 100,
       label: 'Add author',
       name: 'addAuthor',
@@ -114,18 +114,21 @@ export class BookshelfcontentComponent implements AfterViewInit {
       class: 'btn btn-secondary',
       clickFunc: () => {
         console.log('addAuthor: clickFunc');
-        this.config.push(ConfigurationContainer.spawnInputField('author', this.config));
+        const newField: FieldConfig = Spawner.spawnInputField('author', this.config);
+        this.config.push(newField);
         this.config.sort((a, b) => { return (a.order - b.order); });
+        this.form.addControl(newField);
       }
     },
     {
-      id: 'submitButton',
+      group: 'submitButton',
       order: 101,
       label: 'Submit',
       name: 'submit',
       type: 'button',
       inputType: 'submit',
-      class: 'btn btn-primary'
+      class: 'btn btn-primary',
+      clickFunc: () => {}
     }
   ];
 
