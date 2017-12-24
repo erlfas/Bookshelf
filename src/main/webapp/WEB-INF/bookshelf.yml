@@ -207,7 +207,7 @@ paths:
           description: "Invalid bookshelfId"
       security:
         - UserSecurity: []
-  /bookshelf/addbook:
+  /bookshelf/id/{id}/addbook:
     post:
       tags:
       - "bookshelf"
@@ -223,6 +223,11 @@ paths:
         in: header
         required: true
         type: string
+      - in: path
+        name: id
+        type: string
+        description: The id of the bookshelf
+        required: true
       - name: body
         in: body
         description: Book

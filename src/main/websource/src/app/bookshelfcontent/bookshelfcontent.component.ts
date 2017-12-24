@@ -142,15 +142,25 @@ export class BookshelfcontentComponent implements AfterViewInit {
     private bookshelfService: BookshelfService,
     private authService: AuthenticationService) {
 
+      console.log('BookshelfcontentComponent: constructor');
+
       route.params.subscribe(params => {
         this.id = params['id'];
-        this.bookshelfService.getBookshelf(this.id).subscribe(x => {
-          this.bookshelf = x;
-        });
+        this.bookshelfService
+          .getBookshelf(this.id)
+          .subscribe(
+            data => {
+              console.log('bookshelfService: getBookshelf: subscribe: data: ', data);
+              this.bookshelf = data;
+            },
+            err => {
+              console.log('bookshelfService: getBookshelf: subscribe: error', err);
+            });
       });
   }
 
   ngAfterViewInit() {
+
     let previousValid = this.form.valid;
     this.form.changes.subscribe(() => {
       if (this.form.valid !== previousValid) {
@@ -207,11 +217,20 @@ export class BookshelfcontentComponent implements AfterViewInit {
       value['numPages'], this.getAuthors(value), null);
     console.log('BookshelfcontentComponent: submit: value: ', value);
     console.log('BookshelfcontentComponent: submit: book: ', book);
-    this.bookshelfService.addBookToBookshelf(this.id, book);
-  }
-
-  addAuthorField(): void {
-    ;
+    this.bookshelfService
+      .addBookToBookshelf(this.id, book)
+      .subscribe(
+        data => {
+          console.log('addBookToBookshelf: status of result: ', data.status);
+          if (data.ok) {
+            this.bookshelf.books.push(book);
+          }
+        },
+        err => {
+          console.log('addBookToBookshelf: result: error', err);
+        },
+        () => {}
+      );
   }
 
 }

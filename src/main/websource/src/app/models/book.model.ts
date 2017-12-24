@@ -106,4 +106,11 @@ export class Book {
         this._tags = v;
     }
 
+    authorSummary(): string {
+        if (this._authors !== null && this._authors !== undefined) {
+            return this.authors.join();
+        }
+        return '';
+    }
+
 }

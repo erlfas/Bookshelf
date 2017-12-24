@@ -15,8 +15,10 @@ export class BookshelfService {
         private router: Router) {}
 
     addBookToBookshelf(bookshelfId: string, book: Book): Observable<HttpResponse<Object>> {
-        const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/id/${bookshelfId}`;
+        const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/id/${bookshelfId}/addbook/`;
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+        console.log('BookshelfService: addBookToBookshelf: url: ', url);
 
         return this.http.get(url, {headers: header, observe: 'response'});
     }
@@ -24,6 +26,8 @@ export class BookshelfService {
     getBookshelf(id: string): Observable<Bookshelf> {
         const url = `http://localhost:8080/Bookshelf/webresources/bookshelf/id/${id}`;
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+
+        console.log('BookshelfService: getBookshelf: url: ', url);
 
         // https://angular.io/guide/http#reading-the-full-response
         return this.http.get<Bookshelf>(url, {headers: header});

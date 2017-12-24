@@ -10,7 +10,6 @@ import javax.ws.rs.core.SecurityContext;
 import no.fasmer.bookshelf.api.BookshelfApi;
 import no.fasmer.bookshelf.ejb.ApiKeyBean;
 import no.fasmer.bookshelf.ejb.BookshelfBean;
-import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.mapper.Mapper;
@@ -33,10 +32,20 @@ public class BookshelfApiImpl implements BookshelfApi {
     private Logger logger;
 
     @Override
-    public Response addBookToBookshelf(String apiKey, BookToAdd bookToAdd, SecurityContext securityContext) {
+    public Response addBookToBookshelf(String apiKey, String id, BookToAdd bookToAdd, SecurityContext securityContext) {
         logger.log(Level.INFO, "addBookToBookshelf");
         
         if (bookToAdd == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        if (StringUtils.isBlank(id)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        try {
+            Long.parseLong(id);
+        } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         
@@ -64,9 +73,10 @@ public class BookshelfApiImpl implements BookshelfApi {
         
         final no.fasmer.bookshelf.entity.Book book = Mapper.map(bookToAdd.getBook());
         
-        final BookshelfResponse bookshelfResponse = bookshelfBean.addBookToBookshelf(bookToAdd.getUsername(), bookToAdd.getBookshelfTitle(), book);
+        final BookshelfResponse bookshelfResponse = bookshelfBean.addBookToBookshelf(Long.parseLong(id), book);
         
         if (bookshelfResponse.getRestStatus() == RestStatus.CREATED) {
+            logger.log(Level.INFO, "addBookToBookshelf: book added to bookshelf");
             return Response
                 .created(URI.create(Getter.getBookshelfUrl(bookshelfResponse.getBookshelf())))
                 .build();
@@ -172,6 +182,8 @@ public class BookshelfApiImpl implements BookshelfApi {
 
     @Override
     public Response getBookshelfById(String apiKey, String id, SecurityContext securityContext) {
+        logger.info("getBookshelfById: intro");
+        
         if (StringUtils.isBlank(id)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -203,6 +215,8 @@ public class BookshelfApiImpl implements BookshelfApi {
         if (!userOfBookshelf.getUsername().equals(userOfApiKey.getUsername())) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
+        
+        logger.info(String.format("getBookshelfById: found bookshelf with %d books.", bookshelf.getBooks().size()));
         
         return Response.ok(Mapper.map(bookshelf)).build();
     }

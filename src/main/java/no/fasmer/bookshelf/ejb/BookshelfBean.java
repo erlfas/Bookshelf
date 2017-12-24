@@ -33,6 +33,28 @@ public class BookshelfBean {
         return bookshelfDao.getAllBookshelvesByUsername(username);
     }
     
+    public BookshelfResponse addBookToBookshelf(Long id, Book book) {
+        if (id == null) {
+            return new BookshelfResponse(RestStatus.INVALID_INPUT, null);
+        }
+        
+        if (book == null) {
+            return new BookshelfResponse(RestStatus.INVALID_INPUT, null);
+        }
+        
+        final Bookshelf bookshelf = bookshelfDao.find(id);
+        
+        if (bookshelf == null) {
+            return new BookshelfResponse(RestStatus.NOT_FOUND, null);
+        }
+        
+        bookshelf.getBooks().add(book);
+        
+        bookshelfDao.persist(bookshelf);
+        
+        return new BookshelfResponse(RestStatus.CREATED, bookshelf);
+    }
+    
     public BookshelfResponse addBookToBookshelf(String title, String username, Book book) {
         if (StringUtils.isBlank(title)) {
             return new BookshelfResponse(RestStatus.INVALID_INPUT, null);
