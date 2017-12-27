@@ -3,6 +3,7 @@ package no.fasmer.bookshelf.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -51,7 +52,7 @@ public class Bookshelf implements Serializable {
     private String title;
     
     // Bookshelf is owner of this many-to-many relationship
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "bookshelf_book", 
             joinColumns = @JoinColumn(name = "bookshelfs_id", referencedColumnName = "id", table = EntityNames.BOOKSHELF), 
             inverseJoinColumns = @JoinColumn(name = "books_isbn13", referencedColumnName = "isbn13", table = EntityNames.BOOK))

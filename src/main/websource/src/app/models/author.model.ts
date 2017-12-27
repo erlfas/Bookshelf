@@ -10,4 +10,8 @@ export class Author {
         this.lastName = lastName;
     }
 
+    fullName(): string {
+        return this.firstName + " " + this.lastName;
+    }
+
 }

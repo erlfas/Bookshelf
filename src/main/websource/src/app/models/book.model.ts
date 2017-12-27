@@ -35,8 +35,15 @@ export class Book {
     }
 
     authorSummary(): string {
+        let s = '';
         if (this.authors !== null && this.authors !== undefined) {
-            return this.authors.join();
+            for (const a of this.authors) {
+                if (s.length <= 0) {
+                    s = a.fullName();
+                } else {
+                    s = s + ', ' + a.fullName();
+                }
+            }
         }
         return '';
     }
