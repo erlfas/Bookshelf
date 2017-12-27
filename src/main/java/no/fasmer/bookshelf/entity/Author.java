@@ -1,13 +1,18 @@
 package no.fasmer.bookshelf.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = EntityNames.AUTHOR)
 public class Author implements Serializable {
 
     @SequenceGenerator(name = "Author_Gen", sequenceName = "Author_Seq")
@@ -20,6 +25,9 @@ public class Author implements Serializable {
     
     @NotNull
     private String lastName;
+    
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    private Collection<Book> books;
 
     public Long getId() {
         return id;
@@ -43,6 +51,14 @@ public class Author implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Collection<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Collection<Book> books) {
+        this.books = books;
     }
 
 }

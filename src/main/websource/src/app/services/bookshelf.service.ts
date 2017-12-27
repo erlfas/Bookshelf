@@ -19,8 +19,9 @@ export class BookshelfService {
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
 
         console.log('BookshelfService: addBookToBookshelf: url: ', url);
+        console.log(JSON.stringify(book));
 
-        return this.http.get(url, {headers: header, observe: 'response'});
+        return this.http.post(url, JSON.stringify(book), {headers: header, observe: 'response'});
     }
 
     getBookshelf(id: string): Observable<Bookshelf> {

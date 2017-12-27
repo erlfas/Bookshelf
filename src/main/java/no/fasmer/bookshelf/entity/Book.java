@@ -12,12 +12,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Entity
+@Table(name = EntityNames.BOOK)
 @NamedQueries(value = {
     @NamedQuery(
             name = "findByIsbn13",
@@ -27,10 +28,12 @@ import javax.validation.constraints.Pattern;
 public class Book implements Serializable {
 
     @Id
-    @Pattern(regexp = "^\\d{13}", message = "{invalid.isbn13}")
+    //@Pattern(regexp = "^\\d{13}", message = "{invalid.isbn13}")
+    @NotNull
     private String isbn13;
 
-    @Pattern(regexp = "^\\d{10}", message = "{invalid.isbn10}")
+    //@Pattern(regexp = "^\\d{10}", message = "{invalid.isbn10}")
+    @NotNull
     private String isbn10;
 
     @NotNull
@@ -38,16 +41,20 @@ public class Book implements Serializable {
 
     // Book is owner of this many-to-many relationship
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "BOOK_AUTHOR", 
-            joinColumns = @JoinColumn(name = "BOOKS_ISBN13"), 
-            inverseJoinColumns = @JoinColumn(name = "AUTHORS_ID"))
+    @JoinTable(name = "book_author", 
+            joinColumns = @JoinColumn(name = "books_isbn13", referencedColumnName = "isbn13", table = EntityNames.BOOK), 
+            inverseJoinColumns = @JoinColumn(name = "authors_id", referencedColumnName = "id", table = EntityNames.AUTHOR))
     private Collection<Author> authors;
     
+    // Book is owner of this many-to-many relationship
     @ManyToMany
-    @JoinTable(name = "BOOK_TAG", 
-            joinColumns = @JoinColumn(name = "BOOKS_ISBN13"), 
-            inverseJoinColumns = @JoinColumn(name = "TAGS_ID"))
+    @JoinTable(name = "book_tag", 
+            joinColumns = @JoinColumn(name = "books_isbn13", referencedColumnName = "isbn13", table = EntityNames.BOOK), 
+            inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id", table = EntityNames.TAG))
     private Collection<Tag> tags;
+    
+    @ManyToMany(mappedBy = "books")
+    private Collection<Bookshelf> bookshelves;
 
     @Temporal(TemporalType.DATE)
     @NotNull
@@ -56,6 +63,7 @@ public class Book implements Serializable {
     @NotNull
     private String publisher;
 
+    @NotNull
     private Integer edition;
 
     @NotNull
@@ -131,6 +139,14 @@ public class Book implements Serializable {
 
     public void setNumPages(Integer numPages) {
         this.numPages = numPages;
+    }
+
+    public Collection<Bookshelf> getBookshelves() {
+        return bookshelves;
+    }
+
+    public void setBookshelves(Collection<Bookshelf> bookshelves) {
+        this.bookshelves = bookshelves;
     }
     
     public String getAuthorSummary() {

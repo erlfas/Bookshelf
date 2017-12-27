@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "reviewer")
 public class Reviewer implements Serializable {
 
     @SequenceGenerator(name = "Reviewer_Gen", sequenceName = "Reviewer_Seq")

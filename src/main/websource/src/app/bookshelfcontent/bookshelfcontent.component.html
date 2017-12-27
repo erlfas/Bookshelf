@@ -16,7 +16,7 @@
 <div class="collapse" id="browseBooks">
     <div class="card card-body">
         <h3>Books</h3>
-        <div *ngIf="bookshelf !== null">
+        <div *ngIf="bookshelf !== null && bookshelf !== undefined && bookshelf.books !== null && bookshelf.books !== undefined">
             <div class="list-group" *ngFor="let book of bookshelf.books">
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
@@ -27,6 +27,7 @@
                     <small> {{ book.published }} , {{ book.publisher }}</small>
                 </a>
             </div>
+
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 package no.fasmer.bookshelf.rest;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +14,7 @@ import no.fasmer.bookshelf.ejb.BookshelfBean;
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
 import no.fasmer.bookshelf.mapper.Mapper;
-import no.fasmer.bookshelf.model.BookToAdd;
+import no.fasmer.bookshelf.model.Book;
 import no.fasmer.bookshelf.model.BookshelfToAdd;
 import no.fasmer.bookshelf.rest.dto.BookshelfResponse;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
@@ -32,10 +33,10 @@ public class BookshelfApiImpl implements BookshelfApi {
     private Logger logger;
 
     @Override
-    public Response addBookToBookshelf(String apiKey, String id, BookToAdd bookToAdd, SecurityContext securityContext) {
+    public Response addBookToBookshelf(String apiKey, String id, Book book, SecurityContext securityContext) {
         logger.log(Level.INFO, "addBookToBookshelf");
         
-        if (bookToAdd == null) {
+        if (book == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         
@@ -43,37 +44,42 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         
+        Long idLong = null;
         try {
-            Long.parseLong(id);
+            idLong = Long.parseLong(id);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         
-        if (StringUtils.isBlank(bookToAdd.getBookshelfTitle())) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        final BookshelfUser bookshelfUserOfApiKey = apiKeyBean.getBookshelfUser(apiKey);
         
-        if (StringUtils.isBlank(bookToAdd.getUsername())) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        
-        if (bookToAdd.getBook() == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        
-        final BookshelfUser bookshelfUser = apiKeyBean.getBookshelfUser(apiKey);
-        
-        if (bookshelfUser == null) {
+        if (bookshelfUserOfApiKey == null) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        if (!bookshelfUser.getUsername().equals(bookToAdd.getUsername())) {
+        final Bookshelf bookshelf = bookshelfBean.getBookshelfById(idLong);
+        
+        if (bookshelf == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        
+        final BookshelfUser bookshelfUserOfBookshelf = bookshelf.getBookshelfUser();
+        
+        if (bookshelfUserOfBookshelf == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        
+        if (!bookshelfUserOfBookshelf.getUsername().equals(bookshelfUserOfApiKey.getUsername())) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final no.fasmer.bookshelf.entity.Book book = Mapper.map(bookToAdd.getBook());
-        
-        final BookshelfResponse bookshelfResponse = bookshelfBean.addBookToBookshelf(Long.parseLong(id), book);
+        final BookshelfResponse bookshelfResponse;
+        try {
+            bookshelfResponse = bookshelfBean.addBookToBookshelf(idLong, Mapper.map(book));
+        } catch (ParseException ex) {
+            // book.published
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         
         if (bookshelfResponse.getRestStatus() == RestStatus.CREATED) {
             logger.log(Level.INFO, "addBookToBookshelf: book added to bookshelf");

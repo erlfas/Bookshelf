@@ -8,8 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "review")
 public class Review implements Serializable {
 
     @SequenceGenerator(name = "Review_Gen", sequenceName = "Review_Seq")

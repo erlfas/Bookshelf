@@ -233,12 +233,12 @@ paths:
         description: Book
         required: true
         schema:
-          $ref: "#/definitions/BookToAdd"
+          $ref: "#/definitions/Book"
       responses:
         200:
           description: "successful operation"
         400:
-          description: "Invalid isbn13"
+          description: "Invalid request data"
       security:
         - UserSecurity: []
   /book:
@@ -467,7 +467,6 @@ definitions:
         type: "string"
       published:
         type: "string"
-        format: "date"
       publisher:
         type: "string"
       edition:

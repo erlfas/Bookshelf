@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -18,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"bookshelfUser_id", "title"}))
+@Table(name = EntityNames.BOOKSHELF, uniqueConstraints = @UniqueConstraint(columnNames = {"bookshelfUser_id", "title"}))
 @NamedQueries(value = {
     @NamedQuery(
             name = "getBookshelf",
@@ -48,7 +50,11 @@ public class Bookshelf implements Serializable {
     @NotNull
     private String title;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    // Bookshelf is owner of this many-to-many relationship
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "bookshelf_book", 
+            joinColumns = @JoinColumn(name = "bookshelfs_id", referencedColumnName = "id", table = EntityNames.BOOKSHELF), 
+            inverseJoinColumns = @JoinColumn(name = "books_isbn13", referencedColumnName = "isbn13", table = EntityNames.BOOK))
     private List<Book> books;
 
     public Long getId() {

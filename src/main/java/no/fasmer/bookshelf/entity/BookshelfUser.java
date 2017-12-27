@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = EntityNames.BOOKSHELFUSER)
 @NamedQueries(value = {
     @NamedQuery(
             name = "findBookshelfUser",

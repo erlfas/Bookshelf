@@ -1,5 +1,6 @@
 package no.fasmer.bookshelf.rest;
 
+import java.text.ParseException;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -26,7 +27,12 @@ public class BookApiImpl implements BookApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final BookResponse bookResponse = bookBean.addBook(Mapper.map(book));
+        final BookResponse bookResponse;
+        try {
+            bookResponse = bookBean.addBook(Mapper.map(book));
+        } catch (ParseException ex) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         
         switch (bookResponse.getBookServiceStatus()) {
             case CREATED:
@@ -68,7 +74,12 @@ public class BookApiImpl implements BookApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final RestStatus restStatus = bookBean.updateBook(Mapper.map(book));
+        final RestStatus restStatus;
+        try {
+            restStatus = bookBean.updateBook(Mapper.map(book));
+        } catch (ParseException ex) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         
         return Response.status(restStatus.getCode()).build();
     }

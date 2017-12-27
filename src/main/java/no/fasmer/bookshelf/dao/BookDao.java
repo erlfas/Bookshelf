@@ -1,5 +1,6 @@
 package no.fasmer.bookshelf.dao;
 
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -16,9 +17,15 @@ public class BookDao extends AbstractDao<Book> {
     }
     
     public Book findByIsbn13(final String isbn13) {
-        return (Book) em.createNamedQuery("findByIsbn13")
+        final List<Book> books = em.createNamedQuery("findByIsbn13")
                 .setParameter("isbn13", isbn13)
-                .getSingleResult();
+                .getResultList();
+        
+        if (books != null && !books.isEmpty()) {
+            return books.get(0);
+        }
+        
+        return null;
     }
     
 }
