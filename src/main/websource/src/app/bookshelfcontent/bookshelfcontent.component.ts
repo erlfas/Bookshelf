@@ -215,7 +215,6 @@ export class BookshelfcontentComponent implements AfterViewInit {
     const book: Book = new Book(value['isbn13'], value['isbn10'], value['title'],
       value['published'], value['publisher'], value['edition'],
       value['numPages'], this.getAuthors(value), null);
-    console.log('BookshelfcontentComponent: submit: value: ', value);
     console.log('BookshelfcontentComponent: submit: book: ', book);
     this.bookshelfService
       .addBookToBookshelf(this.id, book)
@@ -224,6 +223,7 @@ export class BookshelfcontentComponent implements AfterViewInit {
           console.log('addBookToBookshelf: status of result: ', data.status);
           if (data.ok) {
             this.bookshelf.books.push(book);
+            this.form.reset();
           }
         },
         err => {

@@ -101,4 +101,8 @@ export class DynamicFormComponent implements OnChanges, OnInit {
     this.form.controls[name].setValue(value, { emitEvent: true});
   }
 
+  reset() {
+    this.form.reset();
+  }
+
 }

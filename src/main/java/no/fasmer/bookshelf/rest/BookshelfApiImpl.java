@@ -2,7 +2,6 @@ package no.fasmer.bookshelf.rest;
 
 import java.net.URI;
 import java.text.ParseException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -57,19 +56,13 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final Bookshelf bookshelf = bookshelfBean.getBookshelfById(idLong);
+        final no.fasmer.bookshelf.model.Bookshelf bookshelf = bookshelfBean.getBookshelfById(idLong);
         
-        if (bookshelf == null) {
+        if (bookshelf == null || StringUtils.isBlank(bookshelf.getUsername())) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        final BookshelfUser bookshelfUserOfBookshelf = bookshelf.getBookshelfUser();
-        
-        if (bookshelfUserOfBookshelf == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        
-        if (!bookshelfUserOfBookshelf.getUsername().equals(bookshelfUserOfApiKey.getUsername())) {
+        if (!bookshelf.getUsername().equals(bookshelfUserOfApiKey.getUsername())) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
@@ -181,9 +174,9 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final List<Bookshelf> bookshelves = bookshelfBean.getAllBookshelves(username);
+        final no.fasmer.bookshelf.model.Bookshelves bookshelves = bookshelfBean.getAllBookshelves(username);
         
-        return Response.ok(Mapper.map(bookshelves)).build();
+        return Response.ok(bookshelves).build();
     }
 
     @Override
@@ -210,21 +203,19 @@ public class BookshelfApiImpl implements BookshelfApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final Bookshelf bookshelf = bookshelfBean.getBookshelfById(Long.parseLong(id));
+        final no.fasmer.bookshelf.model.Bookshelf bookshelf = bookshelfBean.getBookshelfById(Long.parseLong(id));
         
-        if (bookshelf == null || bookshelf.getBookshelfUser() == null) {
+        if (bookshelf == null || StringUtils.isBlank(bookshelf.getUsername())) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        final BookshelfUser userOfBookshelf = bookshelf.getBookshelfUser();
-        
-        if (!userOfBookshelf.getUsername().equals(userOfApiKey.getUsername())) {
+        if (!bookshelf.getUsername().equals(userOfApiKey.getUsername())) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         
         logger.info(String.format("getBookshelfById: found bookshelf with %d books.", bookshelf.getBooks().size()));
         
-        return Response.ok(Mapper.map(bookshelf)).build();
+        return Response.ok(bookshelf).build();
     }
 
 }

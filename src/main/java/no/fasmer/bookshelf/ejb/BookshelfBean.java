@@ -12,6 +12,7 @@ import no.fasmer.bookshelf.entity.Author;
 import no.fasmer.bookshelf.entity.Book;
 import no.fasmer.bookshelf.entity.Bookshelf;
 import no.fasmer.bookshelf.entity.BookshelfUser;
+import no.fasmer.bookshelf.mapper.Mapper;
 import no.fasmer.bookshelf.rest.dto.BookshelfResponse;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -34,8 +35,9 @@ public class BookshelfBean {
     @Inject
     private Logger logger;
 
-    public List<Bookshelf> getAllBookshelves(String username) {
-        return bookshelfDao.getAllBookshelvesByUsername(username);
+    public no.fasmer.bookshelf.model.Bookshelves getAllBookshelves(String username) {
+        final List<Bookshelf> bookshelves = bookshelfDao.getAllBookshelvesByUsername(username);
+        return Mapper.map(bookshelves);
     }
 
     public BookshelfResponse addBookToBookshelf(Long id, Book book) {
@@ -130,12 +132,18 @@ public class BookshelfBean {
         return new BookshelfResponse(RestStatus.CREATED, bookshelf);
     }
 
-    public Bookshelf getBookshelfById(Long bookshelfId) {
+    public no.fasmer.bookshelf.model.Bookshelf getBookshelfById(Long bookshelfId) {
         if (bookshelfId == null) {
             return null;
         }
 
-        return bookshelfDao.find(bookshelfId);
+        final Bookshelf bookshelf = bookshelfDao.find(bookshelfId);
+        
+        if (bookshelf == null) {
+            return null;
+        }
+        
+        return Mapper.map(bookshelf);
     }
 
     public Bookshelf getBookshelf(String username, String title) {
