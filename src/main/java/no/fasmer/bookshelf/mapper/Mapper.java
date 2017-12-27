@@ -69,8 +69,10 @@ public class Mapper {
 
     public static List<no.fasmer.bookshelf.model.Tag> mapTags(Collection<no.fasmer.bookshelf.entity.Tag> jpaTags) {
         final List<no.fasmer.bookshelf.model.Tag> swaggerTags = new ArrayList<>();
-        for (no.fasmer.bookshelf.entity.Tag jpaTag : jpaTags) {
-            swaggerTags.add(mapTag(jpaTag));
+        if (jpaTags != null) {
+            for (no.fasmer.bookshelf.entity.Tag jpaTag : jpaTags) {
+                swaggerTags.add(mapTag(jpaTag));
+            }
         }
 
         return swaggerTags;
@@ -108,7 +110,7 @@ public class Mapper {
         swaggerBook.setIsbn10(jpaBook.getIsbn10());
         swaggerBook.setIsbn13(jpaBook.getIsbn13());
         swaggerBook.setNumPages(jpaBook.getNumPages());
-        swaggerBook.setPublished(jpaBook.getPublished().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        swaggerBook.setPublished(new SimpleDateFormat("yyyy-MM-dd").format(jpaBook.getPublished()));
         swaggerBook.setPublisher(jpaBook.getPublisher());
         swaggerBook.setTags(mapTags(jpaBook.getTags()));
         swaggerBook.setTitle(jpaBook.getTitle());

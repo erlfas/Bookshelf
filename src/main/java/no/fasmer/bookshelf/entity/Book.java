@@ -47,13 +47,13 @@ public class Book implements Serializable {
     private Collection<Author> authors;
     
     // Book is owner of this many-to-many relationship
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "book_tag", 
             joinColumns = @JoinColumn(name = "books_isbn13", referencedColumnName = "isbn13", table = EntityNames.BOOK), 
             inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id", table = EntityNames.TAG))
     private Collection<Tag> tags;
     
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
     private Collection<Bookshelf> bookshelves;
 
     @Temporal(TemporalType.DATE)
