@@ -23,6 +23,10 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
             name = "findByIsbn13",
             query = "SELECT b FROM Book b WHERE b.isbn13 = :isbn13"
+    ),
+    @NamedQuery(
+            name = "findByTitle",
+            query = "SELECT b FROM Book b WHERE b.title LIKE :title"
     )
 })
 public class Book implements Serializable {

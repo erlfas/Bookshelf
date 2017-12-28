@@ -2,6 +2,7 @@ package no.fasmer.bookshelf.entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -9,6 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "review")
@@ -20,14 +22,15 @@ public class Review implements Serializable {
     private Long id;
     
     @Lob
+    @NotNull
     private String text;
     
     @ManyToOne
     @JoinColumn(name = "BOOK_ISBN13")
     private Book book;
     
-    @ManyToOne
-    private Reviewer reviewer;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private BookshelfUser bookshelfUser;
 
     public Long getId() {
         return id;
@@ -53,12 +56,12 @@ public class Review implements Serializable {
         this.book = book;
     }
 
-    public Reviewer getReviewer() {
-        return reviewer;
+    public BookshelfUser getBookshelfUser() {
+        return bookshelfUser;
     }
 
-    public void setReviewer(Reviewer reviewer) {
-        this.reviewer = reviewer;
+    public void setBookshelfUser(BookshelfUser bookshelfUser) {
+        this.bookshelfUser = bookshelfUser;
     }
     
 }

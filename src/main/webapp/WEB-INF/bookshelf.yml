@@ -242,6 +242,35 @@ paths:
       security:
         - UserSecurity: []
   /book:
+    get:
+      tags:
+      - "book"
+      summary: "Search for books by title"
+      description: "Search for books by title"
+      operationId: "getBookByTitle"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: API-KEY
+        in: header
+        required: true
+        type: string
+      - name: title
+        in: query
+        description: The title
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Books"
+        405:
+          description: "Invalid input"
+      security:
+        - UserSecurity: []
     post:
       tags:
       - "book"
@@ -264,10 +293,8 @@ paths:
         schema:
           $ref: "#/definitions/Book"
       responses:
-        200:
+        201:
           description: "Created"
-          schema:
-            $ref: "#/definitions/Bookshelf"
         405:
           description: "Invalid input"
       security:
@@ -443,17 +470,6 @@ definitions:
       username:
         type: string
         example: john@smith.com
-  BookToAdd:
-    type: object
-    properties:
-      bookshelfTitle:
-        type: string
-        example: Fiction
-      username:
-        type: string
-        example: john@smith.com
-      book:
-        $ref:  "#/definitions/Book"
   Book:
     type: "object"
     properties:
@@ -489,6 +505,15 @@ definitions:
           name: "author"
     xml:
       name: "Book"
+  Books:
+    type: object
+    properties:
+      books:
+        type: array
+        items:
+          $ref: "#/definitions/Book"
+    xml:
+      name: "Books"
   Tag:
     type: "object"
     properties:

@@ -1,4 +1,8 @@
-<h2> Bookshelf: {{ bookshelf !== undefined ? bookshelf.title : '' }} </h2>
+<div>
+  <h2>Search books by title</h2>
+  <app-dynamic-form [config]="config" #form="dynamicForm" (submit)="submit($event)">
+  </app-dynamic-form>
+</div>
 
 <div *ngIf="books !== null && books !== undefined">
     <div class="list-group" *ngFor="let book of books">

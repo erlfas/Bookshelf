@@ -136,7 +136,11 @@ public class Mapper {
         jpaBook.setIsbn10(swaggerBook.getIsbn10());
         jpaBook.setIsbn13(swaggerBook.getIsbn13());
         jpaBook.setNumPages(swaggerBook.getNumPages());
-        jpaBook.setPublished(new SimpleDateFormat("yyyy-MM-dd").parse(swaggerBook.getPublished()));
+        try {
+            jpaBook.setPublished(new SimpleDateFormat("yyyy-MM-dd").parse(swaggerBook.getPublished()));
+        } catch (Exception e) {
+            
+        }
         jpaBook.setPublisher(swaggerBook.getPublisher());
         jpaBook.setPictureUrl(swaggerBook.getPictureUrl());
 

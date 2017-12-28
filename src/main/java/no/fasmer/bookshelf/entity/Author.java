@@ -7,12 +7,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = EntityNames.AUTHOR)
+@NamedQueries(value = {
+    @NamedQuery(
+            name = "findByName",
+            query = "SELECT a FROM Author a WHERE a.firstName = :fn AND a.lastName = :ln"
+    )
+})
 public class Author implements Serializable {
 
     @SequenceGenerator(name = "Author_Gen", sequenceName = "Author_Seq")

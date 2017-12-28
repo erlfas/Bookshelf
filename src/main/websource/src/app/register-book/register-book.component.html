@@ -1,0 +1,8 @@
+<h2>Register book</h2>
+<div *ngIf="isLoggedIn()">
+  <app-dynamic-form [config]="config" #form="dynamicForm" (submit)="submit($event)">
+  </app-dynamic-form>
+</div>
+<div *ngIf="!isLoggedIn()">
+  You must log in to register books.
+</div>

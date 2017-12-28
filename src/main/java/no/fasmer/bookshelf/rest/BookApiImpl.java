@@ -1,6 +1,9 @@
 package no.fasmer.bookshelf.rest;
 
 import java.text.ParseException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import no.fasmer.bookshelf.rest.enums.RestStatus;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -10,7 +13,6 @@ import no.fasmer.bookshelf.ejb.ApiKeyBean;
 import no.fasmer.bookshelf.ejb.BookBean;
 import no.fasmer.bookshelf.mapper.Mapper;
 import no.fasmer.bookshelf.model.Book;
-import no.fasmer.bookshelf.rest.dto.BookResponse;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 public class BookApiImpl implements BookApi {
@@ -20,6 +22,9 @@ public class BookApiImpl implements BookApi {
     
     @Inject
     private ApiKeyBean apiKeyBean;
+    
+    @Inject
+    private Logger logger;
 
     @Override
     public Response addBook(String apiKey, Book book, SecurityContext securityContext) {
@@ -27,22 +32,22 @@ public class BookApiImpl implements BookApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         
-        final BookResponse bookResponse;
+        final RestStatus restStatus;
         try {
-            bookResponse = bookBean.addBook(Mapper.map(book));
+            restStatus = bookBean.addBook(Mapper.map(book));
         } catch (ParseException ex) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         
-        switch (bookResponse.getBookServiceStatus()) {
+        switch (restStatus) {
             case CREATED:
                 return Response
-                .status(bookResponse.getBookServiceStatus().getCode())
+                .status(restStatus.getCode())
                 .header("Location", "/book/" + book.getIsbn13())
                 .build();
             default:
                 return Response
-                        .status(bookResponse.getBookServiceStatus().getCode())
+                        .status(restStatus.getCode())
                         .build();
         }
     }
@@ -91,6 +96,18 @@ public class BookApiImpl implements BookApi {
         }
         
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
+    @Override
+    public Response getBookByTitle(String apiKey, String title, SecurityContext securityContext) {
+        logger.log(Level.INFO, String.format("getBookByTitle"));
+        
+        try {
+            final List<no.fasmer.bookshelf.model.Book> books = bookBean.findBooksByTitle(title);
+            return Response.ok(books).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
 }

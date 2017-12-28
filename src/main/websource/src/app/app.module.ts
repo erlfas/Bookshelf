@@ -20,6 +20,11 @@ import { FormInputComponent } from 'app/dynamic-form/components/form-input/form-
 import { FormSelectComponent } from 'app/dynamic-form/components/form-select/form-select.component';
 import { FormButtonComponent } from 'app/dynamic-form/components/form-button/form-button.component';
 import { DynamicFieldDirective } from 'app/dynamic-form/components/dynamic-field/dynamic-field.directive';
+import { RegisterBookComponent } from 'app/register-book/register-book.component';
+import { BookService } from 'app/services/book.service';
+import { AlertService } from 'app/services/alert.service';
+import { AlertComponent } from 'app/alert/alert.component';
+import { SearchBookComponent } from 'app/search-book/search-book.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,7 +33,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LoginComponent },
   { path: 'bookshelf', component: BookshelfComponent, canActivate: [AuthGuard]},
-  { path: 'bookshelfcontent/:id', component: BookshelfcontentComponent, canActivate: [AuthGuard]}
+  { path: 'bookshelfcontent/:id', component: BookshelfcontentComponent, canActivate: [AuthGuard]},
+  { path: 'registerbook', component: RegisterBookComponent, canActivate: [AuthGuard]},
+  { path: 'searchbook', component: SearchBookComponent},
 ];
 
 @NgModule({
@@ -38,7 +45,10 @@ const routes: Routes = [
     HomeComponent,
     RegisterComponent,
     BookshelfComponent,
-    BookshelfcontentComponent
+    BookshelfcontentComponent,
+    RegisterBookComponent,
+    AlertComponent,
+    SearchBookComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +63,8 @@ const routes: Routes = [
     AuthGuard,
     AuthenticationService,
     BookshelfService,
+    BookService,
+    AlertService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiKeyInterceptor,

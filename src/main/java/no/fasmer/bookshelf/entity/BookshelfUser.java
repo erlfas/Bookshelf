@@ -1,14 +1,17 @@
 package no.fasmer.bookshelf.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -50,6 +53,9 @@ public class BookshelfUser implements Serializable {
     
     @Enumerated(EnumType.STRING)
     private SecurityLevel securityLevel;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookshelfUser")
+    private Collection<Review> reviews;
 
     public Long getId() {
         return id;
@@ -105,6 +111,14 @@ public class BookshelfUser implements Serializable {
 
     public void setSecurityLevel(SecurityLevel securityLevel) {
         this.securityLevel = securityLevel;
+    }
+
+    public Collection<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Collection<Review> reviews) {
+        this.reviews = reviews;
     }
     
 }
