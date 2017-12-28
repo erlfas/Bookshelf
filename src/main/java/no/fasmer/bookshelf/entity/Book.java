@@ -68,6 +68,8 @@ public class Book implements Serializable {
 
     @NotNull
     private Integer numPages;
+    
+    private String pictureUrl;
 
     public String getIsbn13() {
         return isbn13;
@@ -147,6 +149,14 @@ public class Book implements Serializable {
 
     public void setBookshelves(Collection<Bookshelf> bookshelves) {
         this.bookshelves = bookshelves;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
     
     public String getAuthorSummary() {

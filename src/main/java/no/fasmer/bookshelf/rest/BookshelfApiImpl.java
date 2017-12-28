@@ -123,6 +123,8 @@ public class BookshelfApiImpl implements BookshelfApi {
 
     @Override
     public Response getBookshelf(String apiKey, String title, String username, SecurityContext securityContext) {
+        logger.log(Level.INFO, String.format("getBookshelf: %s", title));
+        
         if (StringUtils.isBlank(apiKey)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -156,6 +158,7 @@ public class BookshelfApiImpl implements BookshelfApi {
 
     @Override
     public Response getBookshelfs(String apiKey, String username, SecurityContext securityContext) {
+        logger.log(Level.INFO, String.format("getBookshelves"));
         if (StringUtils.isBlank(apiKey)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -181,7 +184,7 @@ public class BookshelfApiImpl implements BookshelfApi {
 
     @Override
     public Response getBookshelfById(String apiKey, String id, SecurityContext securityContext) {
-        logger.info("getBookshelfById: intro");
+        logger.log(Level.INFO, String.format("getBookshelfById: %s", id));
         
         if (StringUtils.isBlank(id)) {
             return Response.status(Response.Status.BAD_REQUEST).build();

@@ -113,6 +113,7 @@ public class Mapper {
         swaggerBook.setPublisher(jpaBook.getPublisher());
         swaggerBook.setTags(mapTags(jpaBook.getTags()));
         swaggerBook.setTitle(jpaBook.getTitle());
+        swaggerBook.setPictureUrl(jpaBook.getPictureUrl());
 
         return swaggerBook;
     }
@@ -137,6 +138,7 @@ public class Mapper {
         jpaBook.setNumPages(swaggerBook.getNumPages());
         jpaBook.setPublished(new SimpleDateFormat("yyyy-MM-dd").parse(swaggerBook.getPublished()));
         jpaBook.setPublisher(swaggerBook.getPublisher());
+        jpaBook.setPictureUrl(swaggerBook.getPictureUrl());
 
         final List<no.fasmer.bookshelf.entity.Tag> jpaTags = new ArrayList<>();
         if (swaggerBook.getTags() != null) {

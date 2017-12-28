@@ -10,16 +10,20 @@ import { DynamicFormComponent } from 'app/dynamic-form/containers/dynamic-form/d
 import { Book } from 'app/models/book.model';
 import { Spawner } from 'app/dynamic-form/models/spawner';
 import { Author } from 'app/models/author.model';
+import { AddBookConstants } from 'app/dynamic-form/models/addbook.constants';
+import { ViewBook } from 'app/models/viewbook.model';
+import { ChangeDetectorRef } from '@angular/core/src/change_detection/change_detector_ref';
 
 @Component({
   selector: 'app-bookshelfcontent',
   templateUrl: './bookshelfcontent.component.html',
   styleUrls: ['./bookshelfcontent.component.css']
 })
-export class BookshelfcontentComponent implements AfterViewInit {
+export class BookshelfcontentComponent implements AfterViewInit, OnInit {
 
   id: string;
   bookshelf: Bookshelf;
+  books: ViewBook[];
 
   @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
 
@@ -95,8 +99,18 @@ export class BookshelfcontentComponent implements AfterViewInit {
       inputType: 'number'
     },
     {
-      group: 'author',
+      group: 'pictureUrl',
       order: 8,
+      type: 'input',
+      label: 'URL to picture',
+      name: 'pictureUrl',
+      placeholder: 'URL to picture',
+      validation: [],
+      inputType: AddBookConstants.INPUT_TYPE_TEXT
+    },
+    {
+      group: 'author',
+      order: 9,
       type: 'input',
       label: 'Author',
       name: 'author',
@@ -142,32 +156,32 @@ export class BookshelfcontentComponent implements AfterViewInit {
     private bookshelfService: BookshelfService,
     private authService: AuthenticationService) {
 
-      console.log('BookshelfcontentComponent: constructor');
+  }
 
-      route.params.subscribe(params => {
-        this.id = params['id'];
-        this.bookshelfService
-          .getBookshelf(this.id)
-          .subscribe(
-            data => {
-              console.log('bookshelfService: getBookshelf: subscribe: data: ', data);
-              this.bookshelf = data;
-            },
-            err => {
-              console.log('bookshelfService: getBookshelf: subscribe: error', err);
+  ngOnInit(): void {
+    console.log('BookshelfcontentComponent: ngOnInit');
+    this.route.params.subscribe(params => {
+      this.id = params['id'];
+      this.bookshelfService
+        .getBookshelf(this.id)
+        .subscribe(
+          data => {
+            console.log('BookshelfcontentComponent: ngOnInit: bookshelfService: getBookshelf: subscribe: data: ', data);
+            this.bookshelf = data;
+            this.books = data.books.map(x => {
+              return new ViewBook(x.isbn13, x.isbn10, x.title,
+                x.published, x.publisher, x.edition,
+                 x.numPages, x.authors, x.tags, x.pictureUrl);
             });
-      });
+          },
+          err => {
+            console.log('BookshelfcontentComponent: ngOnInit: bookshelfService: getBookshelf: subscribe: error', err);
+          });
+    });
   }
 
   ngAfterViewInit() {
-
-    let previousValid = this.form.valid;
-    this.form.changes.subscribe(() => {
-      if (this.form.valid !== previousValid) {
-        previousValid = this.form.valid;
-        this.form.setDisabled('submit', !previousValid);
-      }
-    });
+    console.log('BookshelfcontentComponent: ngAfterViewInit');
   }
 
   maxIsReached(config: FieldConfig[]): boolean {
@@ -214,16 +228,25 @@ export class BookshelfcontentComponent implements AfterViewInit {
   submit(value: {[name: string]: any}) {
     const book: Book = new Book(value['isbn13'], value['isbn10'], value['title'],
       value['published'], value['publisher'], value['edition'],
-      value['numPages'], this.getAuthors(value), null);
+      value['numPages'], this.getAuthors(value), null, value['pictureUrl']);
     console.log('BookshelfcontentComponent: submit: book: ', book);
     this.bookshelfService
       .addBookToBookshelf(this.id, book)
       .subscribe(
         data => {
-          console.log('addBookToBookshelf: status of result: ', data.status);
-          if (data.ok) {
+          console.log('BookshelfcontentComponent: submit: addBookToBookshelf: status of result: ', data.status);
+          if (data.status === 200 || data.status === 201) {
             this.bookshelf.books.push(book);
+            if (this.books === null || this.books === undefined) {
+              this.books = [];
+            }
+            this.books.push(new ViewBook(book.isbn13, book.isbn10, book.title,
+              book.published, book.publisher, book.edition,
+              book.numPages, book.authors, book.tags, book.pictureUrl));
             this.form.reset();
+            console.log('BookshelfcontentComponent: submit: OK');
+          } else {
+            console.log('BookshelfcontentComponent: submit: status: ', data.status);
           }
         },
         err => {

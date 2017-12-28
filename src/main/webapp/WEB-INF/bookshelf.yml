@@ -396,8 +396,6 @@ paths:
       responses:
         200:
           description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
       security:
         - AdminSecurity: []
 securityDefinitions:
@@ -460,21 +458,23 @@ definitions:
     type: "object"
     properties:
       isbn13:
-        type: "string"
+        type: string
       isbn10:
-        type: "string"
+        type: string
       title:
-        type: "string"
+        type: string
       published:
-        type: "string"
+        type: string
       publisher:
-        type: "string"
+        type: string
       edition:
-        type: "integer"
-        format: "int32"
+        type: integer
+        format: int32
       numPages:
-        type: "integer"
-        format: "int32"
+        type: integer
+        format:  int32
+      pictureUrl:
+        type: string
       tags:
         type: "array"
         items:
@@ -538,16 +538,6 @@ definitions:
         example: "Smith"
     xml:
       name: "Author"
-  ApiResponse:
-    type: "object"
-    properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
-        type: "string"
-      message:
-        type: "string"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

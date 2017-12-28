@@ -1,7 +1,7 @@
 import { Author } from './author.model';
 import { Tag } from './tag.model';
 
-export class Book {
+export class ViewBook {
     isbn13: string;
     isbn10: string;
     title: string;
@@ -12,6 +12,7 @@ export class Book {
     authors: Array<Author>;
     tags: Array<Tag>;
     pictureUrl; string;
+    authorSummary: string;
 
     constructor(
         isbn13p: string,
@@ -35,6 +36,21 @@ export class Book {
         this.authors = authorsp;
         this.tags = tagsp;
         this.pictureUrl = pictureurlp;
+        this.authorSummary = this.buildAuthorSummary(authorsp);
+    }
+
+    private buildAuthorSummary(authorsp: Array<Author>): string {
+        let s = '';
+        if (authorsp !== null && authorsp !== undefined) {
+            for (const a of authorsp) {
+                if (s.length <= 0) {
+                    s = a.firstName + ' ' + a.lastName;
+                } else {
+                    s = s + ', ' + a.firstName + ' ' + a.lastName;
+                }
+            }
+        }
+        return s;
     }
 
 }
