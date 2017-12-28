@@ -18,7 +18,7 @@ public class BookDao extends AbstractDao<Book> {
     
     public List<Book> findByTitle(String title) {
         return em.createNamedQuery("findByTitle")
-                .setParameter("title", title)
+                .setParameter("title", "%" + title + "%")
                 .getResultList();
     }
     
