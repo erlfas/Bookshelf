@@ -25,8 +25,9 @@ import { BookService } from 'app/services/book.service';
 import { AlertService } from 'app/services/alert.service';
 import { AlertComponent } from 'app/alert/alert.component';
 import { SearchBookComponent } from 'app/search-book/search-book.component';
-import { BookItemComponent } from './book-item/book-item.component';
-import { BookListComponent } from './book-list/book-list.component';
+import { BookItemComponent } from 'app/book-item/book-item.component';
+import { BookListComponent } from 'app/book-list/book-list.component';
+import { BookComponent } from 'app/book/book.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'bookshelfcontent/:id', component: BookshelfcontentComponent, canActivate: [AuthGuard]},
   { path: 'registerbook', component: RegisterBookComponent, canActivate: [AuthGuard]},
   { path: 'searchbook', component: SearchBookComponent},
+  { path: 'book/:id', component: BookComponent }
 ];
 
 @NgModule({
@@ -52,7 +54,8 @@ const routes: Routes = [
     AlertComponent,
     SearchBookComponent,
     BookItemComponent,
-    BookListComponent
+    BookListComponent,
+    BookComponent
   ],
   imports: [
     BrowserModule,

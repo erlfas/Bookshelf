@@ -41,12 +41,18 @@ public class BookBean {
         return books;
     }
     
-    public Book getBook(String isbn13) {
+    public no.fasmer.bookshelf.model.Book getBook(String isbn13) {
         if (StringUtils.isBlank(isbn13)) {
             return null;
         }
         
-        return bookDao.findByIsbn13(isbn13);
+        final Book book = bookDao.findByIsbn13(isbn13);
+        
+        if (book != null) {
+            return Mapper.map(book);
+        }
+        
+        return null;
     }
 
     public RestStatus addBook(no.fasmer.bookshelf.entity.Book book) {

@@ -5,6 +5,7 @@ import { AuthenticationService } from 'app/auth/auth.service';
 import { AuthenticatedUser } from 'app/models/authenticateduser.model';
 import { ActivatedRoute } from '@angular/router';
 import { ViewBook } from 'app/models/viewbook.model';
+import { AlertService } from 'app/services/alert.service';
 
 @Component({
   selector: 'app-bookshelfcontent',
@@ -20,7 +21,8 @@ export class BookshelfcontentComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookshelfService: BookshelfService,
-    private authService: AuthenticationService) {
+    private authService: AuthenticationService,
+    private alertService: AlertService) {
 
   }
 
@@ -39,7 +41,7 @@ export class BookshelfcontentComponent implements OnInit {
             });
           },
           err => {
-            console.log('BookshelfcontentComponent: ngOnInit: bookshelfService: getBookshelf: subscribe: error', err);
+            this.alertService.error('The bookshelf can not be loaded.');
           });
     });
   }

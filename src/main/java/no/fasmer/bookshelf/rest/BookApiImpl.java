@@ -65,12 +65,12 @@ public class BookApiImpl implements BookApi {
 
     @Override
     public Response getBookByIsbn13(String isbn13, SecurityContext securityContext) {
-        final no.fasmer.bookshelf.entity.Book book = bookBean.getBook(isbn13);
+        final no.fasmer.bookshelf.model.Book book = bookBean.getBook(isbn13);
         if (book == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         
-        return Response.ok(Mapper.map(book)).build();
+        return Response.ok(book).build();
     }
 
     @Override
