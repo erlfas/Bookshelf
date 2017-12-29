@@ -5,9 +5,11 @@
   </div>
   <div class="card-body">
     <h5 class="card-title"> {{ book.title }} </h5>
+    <h6 class="card-subtitle mb-2 text-muted">by {{ book.authorSummary }} </h6>
     <p class="card-text"><b>ISBN-13:</b> {{ book.isbn13 }} </p>
+    <p class="card-text"><b>ISBN-10:</b> {{ book.isbn10 }} </p>
     <p class="card-text">Published {{ book.published }} by {{ book.publisher }} </p>
-    <p class="card-text"> {{ book.numPages }} pages. </p>
+    <p class="card-text">{{ book.edition }}. edition. {{ book.numPages }} pages. </p>
     <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
 </div>
