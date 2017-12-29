@@ -16,8 +16,16 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 
 @Entity
 @Table(name = EntityNames.BOOK)
@@ -32,6 +40,14 @@ import org.hibernate.search.annotations.Indexed;
     )
 })
 @Indexed
+@AnalyzerDef(name = "bookanalyzer",
+        tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+            @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+            @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                @Parameter(name = "language", value = "English")
+            })
+        })
 public class Book implements Serializable {
 
     @Id
@@ -44,6 +60,7 @@ public class Book implements Serializable {
 
     @NotNull
     @Field
+    @Analyzer(definition = "bookanalyzer")
     private String title;
 
     // Book is owner of this many-to-many relationship
