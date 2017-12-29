@@ -63,11 +63,10 @@ export class SearchBookComponent implements AfterViewInit, OnInit {
         .subscribe(
           booklist => {
             if (booklist == null || booklist === undefined
-              || booklist.books == null || booklist.books === undefined
-              || booklist.books.length <= 0) {
+              || booklist.length <= 0) {
               this.alertService.error('Found no books.');
             } else {
-              this.books = booklist.books.map(x => {
+              this.books = booklist.map(x => {
                 return new ViewBook(x.isbn13, x.isbn10, x.title,
                   x.published, x.publisher, x.edition,
                   x.numPages, x.authors, x.tags, x.pictureUrl);

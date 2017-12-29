@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 @Entity
 @Table(name = EntityNames.BOOK)
@@ -29,18 +31,19 @@ import javax.validation.constraints.NotNull;
             query = "SELECT b FROM Book b WHERE b.title LIKE :title"
     )
 })
+@Indexed
 public class Book implements Serializable {
 
     @Id
-    //@Pattern(regexp = "^\\d{13}", message = "{invalid.isbn13}")
     @NotNull
     private String isbn13;
 
-    //@Pattern(regexp = "^\\d{10}", message = "{invalid.isbn10}")
     @NotNull
+    @Field
     private String isbn10;
 
     @NotNull
+    @Field
     private String title;
 
     // Book is owner of this many-to-many relationship

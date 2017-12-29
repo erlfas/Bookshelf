@@ -2,6 +2,8 @@ package no.fasmer.bookshelf.entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,9 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 @Entity
-@Table(name = "review")
+@Table(name = EntityNames.REVIEW)
+@Indexed
 public class Review implements Serializable {
 
     @SequenceGenerator(name = "Review_Gen", sequenceName = "Review_Seq")
@@ -23,6 +28,7 @@ public class Review implements Serializable {
     
     @Lob
     @NotNull
+    @Field
     private String text;
     
     @ManyToOne
@@ -31,6 +37,9 @@ public class Review implements Serializable {
     
     @ManyToOne(fetch = FetchType.EAGER)
     private BookshelfUser bookshelfUser;
+    
+    @Enumerated(EnumType.STRING)
+    private Rating rating;
 
     public Long getId() {
         return id;
@@ -62,6 +71,14 @@ public class Review implements Serializable {
 
     public void setBookshelfUser(BookshelfUser bookshelfUser) {
         this.bookshelfUser = bookshelfUser;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
     
 }

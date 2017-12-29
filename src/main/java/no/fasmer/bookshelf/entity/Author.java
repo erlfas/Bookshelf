@@ -12,6 +12,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 @Entity
 @Table(name = EntityNames.AUTHOR)
@@ -21,6 +23,7 @@ import javax.validation.constraints.NotNull;
             query = "SELECT a FROM Author a WHERE a.firstName = :fn AND a.lastName = :ln"
     )
 })
+@Indexed
 public class Author implements Serializable {
 
     @SequenceGenerator(name = "Author_Gen", sequenceName = "Author_Seq")
@@ -29,9 +32,11 @@ public class Author implements Serializable {
     private Long id;
     
     @NotNull
+    @Field
     private String firstName;
     
     @NotNull
+    @Field
     private String lastName;
     
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)

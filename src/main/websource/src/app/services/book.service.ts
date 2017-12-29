@@ -13,13 +13,13 @@ export class BookService {
         private http: HttpClient,
         private router: Router) {}
 
-    findBookByTitle(title: string): Observable<Books> {
+    findBookByTitle(title: string): Observable<Book[]> {
         const url = `http://localhost:8080/Bookshelf/webresources/book?title=${title}`;
         const header = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
 
         console.log('BookService: findBook');
 
-        return this.http.get<Books>(url, {headers: header});
+        return this.http.get<Book[]>(url, {headers: header});
     }
 
     registerBook(book: Book): Observable<HttpResponse<Object>> {
