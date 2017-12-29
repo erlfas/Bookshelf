@@ -4,18 +4,4 @@
   </app-dynamic-form>
 </div>
 
-<div *ngIf="books !== null && books !== undefined">
-    <div class="list-group" *ngFor="let book of books">
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1"> {{ book.title }} </h5>
-                <small> {{ book.isbn13 }} </small>
-            </div>
-            <div *ngIf="book.pictureUrl !== null && book.pictureUrl !== undefined">
-                <img [attr.src]="book.pictureUrl" />
-            </div>
-            <p class="mb-1"> {{ book.authorSummary }} </p>
-            <small> Published by {{ book.publisher }}, {{ book.published }} . {{ book.numPages }} pages. </small>
-        </a>
-    </div>
-</div>
+<app-book-list [books]="books"></app-book-list>
