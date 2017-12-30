@@ -438,38 +438,34 @@ security:
   - UserSecurity: [] 
   - AdminSecurity: []
 definitions:
-  Bookshelves:
+  AuthenticatedUser:
     type: object
     properties:
-      bookshelves:
-        type: array
-        items:
-          $ref: "#/definitions/Bookshelf"
-  Bookshelf:
-    type: object
+      username:
+        type: string
+      hashedApiKey:
+        type: string
+      expires:
+        type: string
+    xml:
+      name: "AuthenticatedUser"
+  Author:
+    type: "object"
+    required:
+    - "firstName"
+    - "lastName"
     properties:
       id:
-        type: string
-        example: 1
-      title:
-        type: string
-        example: Fiction
-      username:
-        type: string
-        example: john@smith.com
-      books:
-        type: array
-        items:
-          $ref:  "#/definitions/Book"
-  BookshelfToAdd:
-    type: object
-    properties:
-      title:
-        type: string
-        example: Fiction
-      username:
-        type: string
-        example: john@smith.com
+        type: "integer"
+        format: "int64"
+      firstName:
+        type: "string"
+        example: "John"
+      lastName:
+        type: "string"
+        example: "Smith"
+    xml:
+      name: "Author"
   Book:
     type: "object"
     properties:
@@ -503,6 +499,12 @@ definitions:
           $ref: "#/definitions/Author"
         xml:
           name: "author"
+      reviews:
+        type: array
+        items:
+          $ref: "#/definitions/Review"
+        xml:
+          name: "review"
     xml:
       name: "Book"
   Books:
@@ -514,6 +516,53 @@ definitions:
           $ref: "#/definitions/Book"
     xml:
       name: "Books"
+  Bookshelf:
+    type: object
+    properties:
+      id:
+        type: string
+        example: 1
+      title:
+        type: string
+        example: Fiction
+      username:
+        type: string
+        example: john@smith.com
+      books:
+        type: array
+        items:
+          $ref:  "#/definitions/Book"
+  BookshelfToAdd:
+    type: object
+    properties:
+      title:
+        type: string
+        example: Fiction
+      username:
+        type: string
+        example: john@smith.com
+  Bookshelves:
+    type: object
+    properties:
+      bookshelves:
+        type: array
+        items:
+          $ref: "#/definitions/Bookshelf"
+  Review:
+    type: object
+    properties:
+      id:
+        type: string
+        example: "123456789"
+      isbn13:
+        type: string
+        example: "978-1328869333"
+      username:
+        type: string
+        example: "john@smith.com"
+      rating:
+        type: string
+        example: "4.5"
   Tag:
     type: "object"
     properties:
@@ -522,15 +571,6 @@ definitions:
         example: "Biography"
     xml:
       name: "Tag"
-  AuthenticatedUser:
-    type: object
-    properties:
-      username:
-        type: string
-      hashedApiKey:
-        type: string
-      expires:
-        type: string
   User:
     type: object
     properties:
@@ -546,23 +586,6 @@ definitions:
         type: string
     xml:
       name: User
-  Author:
-    type: "object"
-    required:
-    - "firstName"
-    - "lastName"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      firstName:
-        type: "string"
-        example: "John"
-      lastName:
-        type: "string"
-        example: "Smith"
-    xml:
-      name: "Author"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

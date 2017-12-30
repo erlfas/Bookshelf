@@ -1,5 +1,6 @@
-import { Author } from './author.model';
-import { Tag } from './tag.model';
+import { Author } from 'app/models/author.model';
+import { Tag } from 'app/models/tag.model';
+import { Review } from 'app/models/review.model';
 
 export class Book {
     isbn13: string;
@@ -11,6 +12,7 @@ export class Book {
     numPages: number;
     authors: Array<Author>;
     tags: Array<Tag>;
+    reviews: Array<Review>;
     pictureUrl; string;
 
     constructor(
@@ -23,6 +25,7 @@ export class Book {
         numPagesp: number,
         authorsp: Array<Author>,
         tagsp: Array<Tag>,
+        reviewsp: Array<Review>,
         pictureurlp: string) {
 
         this.isbn13 = isbn13p;
@@ -34,6 +37,7 @@ export class Book {
         this.numPages = numPagesp;
         this.authors = authorsp;
         this.tags = tagsp;
+        this.reviews = reviewsp;
         this.pictureUrl = pictureurlp;
     }
 

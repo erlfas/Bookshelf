@@ -10,8 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -79,6 +81,10 @@ public class Book implements Serializable {
     
     @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
     private Collection<Bookshelf> bookshelves;
+    
+    // the inverse side
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    private Collection<Review> reviews;
 
     @Temporal(TemporalType.DATE)
     @NotNull
@@ -173,6 +179,14 @@ public class Book implements Serializable {
 
     public void setBookshelves(Collection<Bookshelf> bookshelves) {
         this.bookshelves = bookshelves;
+    }
+
+    public Collection<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Collection<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public String getPictureUrl() {

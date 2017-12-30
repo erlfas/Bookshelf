@@ -202,7 +202,7 @@ export class RegisterBookComponent implements AfterViewInit, OnInit {
   submit(value: {[name: string]: any}) {
     const book: Book = new Book(value['isbn13'], value['isbn10'], value['title'],
       value['published'], value['publisher'], value['edition'],
-      value['numPages'], this.getAuthors(value), null, value['pictureUrl']);
+      value['numPages'], this.getAuthors(value), null, null, value['pictureUrl']);
 
     this.bookService
       .registerBook(book)

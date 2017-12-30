@@ -59,7 +59,7 @@ public class Mapper {
     public static no.fasmer.bookshelf.model.Bookshelf map(no.fasmer.bookshelf.entity.Bookshelf jpaBookshelf) {
         final no.fasmer.bookshelf.model.Bookshelf swaggerBookshelf = new no.fasmer.bookshelf.model.Bookshelf();
         swaggerBookshelf.setId(Getter.getBookshelfId(jpaBookshelf));
-        swaggerBookshelf.setBooks(jpaBookshelf.getBooks().stream().map(Mapper::map).collect(Collectors.toList()));
+        swaggerBookshelf.setBooks(jpaBookshelf.getBooks().stream().map(x -> Mapper.map(x, false)).collect(Collectors.toList()));
         swaggerBookshelf.setUsername(jpaBookshelf.getBookshelfUser().getUsername());
         swaggerBookshelf.setTitle(jpaBookshelf.getTitle());
 
@@ -102,7 +102,7 @@ public class Mapper {
         return swaggerAuthor;
     }
 
-    public static no.fasmer.bookshelf.model.Book map(no.fasmer.bookshelf.entity.Book jpaBook) {
+    public static no.fasmer.bookshelf.model.Book map(no.fasmer.bookshelf.entity.Book jpaBook, boolean withReviews) {
         final no.fasmer.bookshelf.model.Book swaggerBook = new no.fasmer.bookshelf.model.Book();
         swaggerBook.setAuthors(mapAuthors(jpaBook.getAuthors()));
         swaggerBook.setEdition(jpaBook.getEdition());
@@ -114,8 +114,25 @@ public class Mapper {
         swaggerBook.setTags(mapTags(jpaBook.getTags()));
         swaggerBook.setTitle(jpaBook.getTitle());
         swaggerBook.setPictureUrl(jpaBook.getPictureUrl());
+        
+        if (withReviews) {
+            final List<no.fasmer.bookshelf.model.Review> reviews = new ArrayList<>();
+            for (no.fasmer.bookshelf.entity.Review jpaReview : jpaBook.getReviews()) {
+                no.fasmer.bookshelf.model.Review swaggerReview = new no.fasmer.bookshelf.model.Review();
+                swaggerReview.setId(jpaReview.getId().toString());
+                swaggerReview.setIsbn13(jpaBook.getIsbn13());
+                swaggerReview.setRating(jpaReview.getRating().getRating());
+                swaggerReview.setUsername(jpaReview.getBookshelfUser().getUsername());
+                reviews.add(swaggerReview);
+            }
+            swaggerBook.setReviews(reviews);
+        }
 
         return swaggerBook;
+    }
+    
+    public static void map(no.fasmer.bookshelf.entity.Review review) {
+        
     }
 
     public static no.fasmer.bookshelf.entity.Book map(no.fasmer.bookshelf.model.Book swaggerBook) throws ParseException {

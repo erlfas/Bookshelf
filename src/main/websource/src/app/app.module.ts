@@ -28,6 +28,8 @@ import { SearchBookComponent } from 'app/search-book/search-book.component';
 import { BookItemComponent } from 'app/book-item/book-item.component';
 import { BookListComponent } from 'app/book-list/book-list.component';
 import { BookComponent } from 'app/book/book.component';
+import { WriteReviewComponent } from 'app/write-review/write-review.component';
+import { ViewReviewComponent } from 'app/view-review/view-review.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -38,8 +40,10 @@ const routes: Routes = [
   { path: 'bookshelf', component: BookshelfComponent, canActivate: [AuthGuard]},
   { path: 'bookshelfcontent/:id', component: BookshelfcontentComponent, canActivate: [AuthGuard]},
   { path: 'registerbook', component: RegisterBookComponent, canActivate: [AuthGuard]},
-  { path: 'searchbook', component: SearchBookComponent},
-  { path: 'book/:id', component: BookComponent }
+  { path: 'searchbook', component: SearchBookComponent, canActivate: [AuthGuard]},
+  { path: 'book/:id', component: BookComponent, canActivate: [AuthGuard] },
+  { path: 'writereview/:id', component: WriteReviewComponent, canActivate: [AuthGuard]},
+  { path: 'review/:id', component: ViewReviewComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
@@ -55,7 +59,9 @@ const routes: Routes = [
     SearchBookComponent,
     BookItemComponent,
     BookListComponent,
-    BookComponent
+    BookComponent,
+    WriteReviewComponent,
+    ViewReviewComponent
   ],
   imports: [
     BrowserModule,

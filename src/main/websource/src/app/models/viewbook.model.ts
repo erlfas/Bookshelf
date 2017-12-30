@@ -1,5 +1,6 @@
-import { Author } from './author.model';
-import { Tag } from './tag.model';
+import { Author } from 'app/models/author.model';
+import { Tag } from 'app/models/tag.model';
+import { Review } from 'app/models/review.model';
 
 export class ViewBook {
     isbn13: string;
@@ -11,6 +12,7 @@ export class ViewBook {
     numPages: number;
     authors: Array<Author>;
     tags: Array<Tag>;
+    reviews: Array<Review>;
     pictureUrl; string;
     authorSummary: string;
 
@@ -24,6 +26,7 @@ export class ViewBook {
         numPagesp: number,
         authorsp: Array<Author>,
         tagsp: Array<Tag>,
+        reviewsp: Array<Review>,
         pictureurlp: string) {
 
         this.isbn13 = isbn13p;
@@ -35,6 +38,7 @@ export class ViewBook {
         this.numPages = numPagesp;
         this.authors = authorsp;
         this.tags = tagsp;
+        this.reviews = reviewsp;
         this.pictureUrl = pictureurlp;
         this.authorSummary = this.buildAuthorSummary(authorsp);
     }

@@ -30,7 +30,7 @@ export class BookComponent implements OnInit {
         .subscribe(book => {
           this.book = new ViewBook(book.isbn13, book.isbn10, book.title,
             book.published, book.publisher, book.edition,
-             book.numPages, book.authors, book.tags, book.pictureUrl);
+             book.numPages, book.authors, book.tags, book.reviews, book.pictureUrl);
         },
         err => {
           this.alertService.error('The book can not be loaded.');

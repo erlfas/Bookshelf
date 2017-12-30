@@ -35,13 +35,13 @@ public class BookBean {
         
         final List<no.fasmer.bookshelf.model.Book> books = new ArrayList<>();
         for (no.fasmer.bookshelf.entity.Book book : results) {
-            books.add(Mapper.map(book));
+            books.add(Mapper.map(book, false));
         }
         
         return books;
     }
     
-    public no.fasmer.bookshelf.model.Book getBook(String isbn13) {
+    public no.fasmer.bookshelf.model.Book getBook(String isbn13, boolean includeReviews) {
         if (StringUtils.isBlank(isbn13)) {
             return null;
         }
@@ -49,7 +49,7 @@ public class BookBean {
         final Book book = bookDao.findByIsbn13(isbn13);
         
         if (book != null) {
-            return Mapper.map(book);
+            return Mapper.map(book, includeReviews);
         }
         
         return null;

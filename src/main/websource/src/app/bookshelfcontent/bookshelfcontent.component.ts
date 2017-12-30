@@ -37,7 +37,7 @@ export class BookshelfcontentComponent implements OnInit {
             this.books = data.books.map(x => {
               return new ViewBook(x.isbn13, x.isbn10, x.title,
                 x.published, x.publisher, x.edition,
-                 x.numPages, x.authors, x.tags, x.pictureUrl);
+                 x.numPages, x.authors, x.tags, x.reviews, x.pictureUrl);
             });
           },
           err => {

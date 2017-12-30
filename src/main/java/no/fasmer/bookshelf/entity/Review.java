@@ -31,6 +31,7 @@ public class Review implements Serializable {
     @Field
     private String text;
     
+    // owner of the relationship
     @ManyToOne
     @JoinColumn(name = "BOOK_ISBN13")
     private Book book;
